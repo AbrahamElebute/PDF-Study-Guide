@@ -1,0 +1,3712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Study Guide</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg1: #ffffff;
+        --bg2: #f5f5f4;
+        --bg3: #eeede8;
+        --bgi: #e6f1fb;
+        --bgs: #eaf3de;
+        --bgd: #fcebeb;
+        --bgw: #faeeda;
+        --tx1: #1a1a18;
+        --tx2: #5f5e5a;
+        --tx3: #888780;
+        --txi: #185fa5;
+        --txs: #3b6d11;
+        --txd: #a32d2d;
+        --txw: #854f0b;
+        --bd3: rgba(0, 0, 0, 0.12);
+        --bd2: rgba(0, 0, 0, 0.22);
+        --bd1: rgba(0, 0, 0, 0.35);
+        --bdi: rgba(24, 95, 165, 0.4);
+        --bds: rgba(59, 109, 17, 0.4);
+        --bdd: rgba(163, 45, 45, 0.4);
+        --bdw: rgba(133, 79, 11, 0.4);
+        --rmd: 8px;
+        --rlg: 12px;
+        --font:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      /* Auto follows OS. [data-theme="light"|"dark"] forces manual override. */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg1: #1e1e1c;
+          --bg2: #2a2a27;
+          --bg3: #323230;
+          --bgi: #0c447c;
+          --bgs: #27500a;
+          --bgd: #791f1f;
+          --bgw: #633806;
+          --tx1: #f0efe8;
+          --tx2: #b4b2a9;
+          --tx3: #888780;
+          --txi: #85b7eb;
+          --txs: #97c459;
+          --txd: #f09595;
+          --txw: #ef9f27;
+          --bd3: rgba(255, 255, 255, 0.1);
+          --bd2: rgba(255, 255, 255, 0.2);
+          --bd1: rgba(255, 255, 255, 0.35);
+          --bdi: rgba(133, 183, 235, 0.35);
+          --bds: rgba(151, 196, 89, 0.35);
+          --bdd: rgba(240, 149, 149, 0.35);
+          --bdw: rgba(239, 159, 39, 0.35);
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg1: #1e1e1c;
+        --bg2: #2a2a27;
+        --bg3: #323230;
+        --bgi: #0c447c;
+        --bgs: #27500a;
+        --bgd: #791f1f;
+        --bgw: #633806;
+        --tx1: #f0efe8;
+        --tx2: #b4b2a9;
+        --tx3: #888780;
+        --txi: #85b7eb;
+        --txs: #97c459;
+        --txd: #f09595;
+        --txw: #ef9f27;
+        --bd3: rgba(255, 255, 255, 0.1);
+        --bd2: rgba(255, 255, 255, 0.2);
+        --bd1: rgba(255, 255, 255, 0.35);
+        --bdi: rgba(133, 183, 235, 0.35);
+        --bds: rgba(151, 196, 89, 0.35);
+        --bdd: rgba(240, 149, 149, 0.35);
+        --bdw: rgba(239, 159, 39, 0.35);
+      }
+      .qcard.unk {
+        border-color: var(--bdw);
+      }
+      .qnum.unk {
+        background: var(--bgw);
+        color: var(--txw);
+      }
+      .opt.chosen {
+        background: var(--bgw);
+        color: var(--txw);
+        border-color: var(--bdw);
+      }
+      .mval.w {
+        color: var(--txw);
+      }
+      body {
+        font-family: var(--font);
+        font-size: 14px;
+        background: var(--bg3);
+        color: var(--tx1);
+        min-height: 100vh;
+        padding: 1.5rem 1rem;
+      }
+      .app {
+        max-width: 820px;
+        margin: 0 auto;
+        position: relative;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .sub {
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 1.5rem;
+      }
+
+      /* Upload */
+      .upload-zone {
+        border: 1.5px dashed var(--bd2);
+        border-radius: var(--rlg);
+        padding: 2.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        background: var(--bg2);
+        margin-bottom: 1rem;
+      }
+      .upload-zone:hover {
+        border-color: var(--bd1);
+        background: var(--bg3);
+      }
+      .upload-zone input {
+        display: none;
+      }
+      .upload-zone i {
+        font-size: 32px;
+        color: var(--tx2);
+      }
+      .upload-zone .main {
+        font-weight: 500;
+        font-size: 15px;
+        margin: 8px 0 4px;
+        color: var(--tx1);
+      }
+      .upload-zone .hint {
+        font-size: 13px;
+        color: var(--tx2);
+      }
+      #uStatus {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--tx3);
+        min-height: 16px;
+      }
+
+      /* Progress bar */
+      .pbar-wrap {
+        margin-bottom: 8px;
+        display: none;
+      }
+      .ptrack {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--bg2);
+        overflow: hidden;
+      }
+      .pfill {
+        height: 100%;
+        border-radius: 2px;
+        background: var(--txi);
+        transition: width 0.4s;
+      }
+      .plabel {
+        font-size: 12px;
+        color: var(--tx3);
+        margin: 4px 0 12px;
+      }
+
+      /* Metrics */
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 8px;
+        margin: 1rem 0;
+      }
+      .metric {
+        background: var(--bg2);
+        border-radius: var(--rmd);
+        padding: 0.65rem 1rem;
+        cursor: default;
+      }
+      .mlabel {
+        font-size: 11px;
+        color: var(--tx2);
+        margin-bottom: 3px;
+      }
+      .mval {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--tx1);
+      }
+      .mval.g {
+        color: var(--txs);
+      }
+      .mval.r {
+        color: var(--txd);
+      }
+      .mval.b {
+        color: var(--txi);
+      }
+
+      /* Toolbar — restructured into two clear rows */
+      .toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .toolbar-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .toolbar-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--tx3);
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        white-space: nowrap;
+        margin-right: 2px;
+      }
+      .toolbar input[type="text"] {
+        flex: 1;
+        min-width: 140px;
+        max-width: 220px;
+        height: 34px;
+        padding: 0 10px 0 34px;
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        background: var(--bg1);
+        color: var(--tx1);
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .toolbar input[type="text"]:focus {
+        border-color: var(--bd1);
+      }
+      .search-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .search-wrap i {
+        position: absolute;
+        left: 10px;
+        font-size: 14px;
+        color: var(--tx3);
+        pointer-events: none;
+      }
+      .toolbar-divider {
+        width: 1px;
+        height: 22px;
+        background: var(--bd3);
+        margin: 0 2px;
+        flex-shrink: 0;
+      }
+      .pgroup {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        border: 0.5px solid var(--bd2);
+        color: var(--tx2);
+        background: transparent;
+        font-family: var(--font);
+        transition:
+          background 0.15s,
+          color 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .pill:hover {
+        background: var(--bg2);
+      }
+      .pill.on {
+        background: var(--bgi);
+        color: var(--txi);
+        border-color: var(--bdi);
+      }
+      .pill.on-s {
+        background: var(--bgs);
+        color: var(--txs);
+        border-color: var(--bds);
+      }
+      .pill.on-d {
+        background: var(--bgd);
+        color: var(--txd);
+        border-color: var(--bdd);
+      }
+      .pill.on-w {
+        background: var(--bgw);
+        color: var(--txw);
+        border-color: var(--bdw);
+      }
+      /* Danger pill (reset) */
+      .pill.danger {
+        color: var(--txd);
+      }
+      .pill.danger:hover {
+        background: var(--bgd);
+        border-color: var(--bdd);
+      }
+
+      /* Exam duration modal (replaces native prompt) */
+      .exam-modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 250;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .exam-modal-bg.active {
+        display: flex;
+      }
+      .exam-modal {
+        background: var(--bg1);
+        border-radius: 14px;
+        padding: 24px 28px;
+        max-width: 360px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .exam-modal h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .exam-modal p {
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 16px;
+      }
+      .exam-modal .dur-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .dur-btn {
+        flex: 1;
+        min-width: 60px;
+        padding: 10px 8px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--bd2);
+        background: var(--bg2);
+        color: var(--tx1);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: var(--font);
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+        text-align: center;
+      }
+      .dur-btn:hover {
+        background: var(--bg3);
+      }
+      .dur-btn.sel {
+        background: var(--bgi);
+        color: var(--txi);
+        border-color: var(--bdi);
+      }
+      .exam-modal .custom-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .exam-modal .custom-row input {
+        flex: 1;
+        height: 36px;
+        padding: 0 10px;
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        background: var(--bg2);
+        color: var(--tx1);
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+      }
+      .exam-modal .custom-row input:focus {
+        border-color: var(--bd1);
+      }
+      .exam-modal .custom-row span {
+        font-size: 13px;
+        color: var(--tx2);
+      }
+      .exam-modal-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .exam-modal-btns button {
+        padding: 8px 18px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        font-family: var(--font);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .exam-modal-btns .btn-cancel {
+        background: transparent;
+        border: 0.5px solid var(--bd2);
+        color: var(--tx2);
+      }
+      .exam-modal-btns .btn-cancel:hover {
+        background: var(--bg2);
+      }
+      .exam-modal-btns .btn-start {
+        background: var(--txi);
+        color: #fff;
+        border: none;
+        font-weight: 500;
+      }
+      .exam-modal-btns .btn-start:hover {
+        opacity: 0.88;
+      }
+
+      /* Custom confirm modal (replaces native confirm) */
+      .confirm-modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 300;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .confirm-modal-bg.active {
+        display: flex;
+      }
+      .confirm-modal {
+        background: var(--bg1);
+        border-radius: 12px;
+        padding: 22px 26px;
+        max-width: 320px;
+        width: 90%;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+      }
+      .confirm-modal p {
+        font-size: 14px;
+        color: var(--tx1);
+        margin-bottom: 18px;
+        line-height: 1.5;
+      }
+      .confirm-modal-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .confirm-modal-btns button {
+        padding: 7px 16px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        font-family: var(--font);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .confirm-modal-btns .cbtn-cancel {
+        background: transparent;
+        border: 0.5px solid var(--bd2);
+        color: var(--tx2);
+      }
+      .confirm-modal-btns .cbtn-cancel:hover {
+        background: var(--bg2);
+      }
+      .confirm-modal-btns .cbtn-ok {
+        background: var(--txd);
+        color: #fff;
+        border: none;
+        font-weight: 500;
+      }
+      .confirm-modal-btns .cbtn-ok:hover {
+        opacity: 0.88;
+      }
+
+      /* Quiz first-card hint banner */
+      .quiz-hint {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bgi);
+        border: 0.5px solid var(--bdi);
+        border-radius: var(--rmd);
+        padding: 9px 13px;
+        font-size: 12.5px;
+        color: var(--txi);
+        margin-bottom: 10px;
+      }
+      .quiz-hint i {
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .quiz-hint button {
+        margin-left: auto;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--txi);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 0;
+      }
+
+      /* Metrics — primary score gets bigger treatment */
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 8px;
+        margin: 1rem 0;
+      }
+      .metric {
+        background: var(--bg2);
+        border-radius: var(--rmd);
+        padding: 0.65rem 1rem;
+        cursor: default;
+      }
+      .metric.primary {
+        background: var(--bgi);
+        border: 0.5px solid var(--bdi);
+      }
+      .mlabel {
+        font-size: 11px;
+        color: var(--tx2);
+        margin-bottom: 3px;
+      }
+      .metric.primary .mlabel {
+        color: var(--txi);
+        opacity: 0.8;
+      }
+      .mval {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--tx1);
+      }
+      .metric.primary .mval {
+        color: var(--txi);
+      }
+      .mval.g {
+        color: var(--txs);
+      }
+      .mval.r {
+        color: var(--txd);
+      }
+      .mval.b {
+        color: var(--txi);
+      }
+
+      /* Progress bar with label inline */
+      .prog-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .prog-row .ptrack {
+        flex: 1;
+      }
+      .prog-row .plabel {
+        font-size: 12px;
+        color: var(--tx3);
+        white-space: nowrap;
+        min-width: 120px;
+        text-align: right;
+      }
+
+      /* Question cards */
+      .qcard {
+        border: 0.5px solid var(--bd3);
+        border-radius: var(--rlg);
+        margin-bottom: 8px;
+        background: var(--bg1);
+        overflow: hidden;
+        transition: border-color 0.15s;
+      }
+      .qcard.ok {
+        border-color: var(--bds);
+      }
+      .qcard.bad {
+        border-color: var(--bdd);
+      }
+      .qcard.bm .qhdr {
+        background: var(--bgw);
+      }
+      .qhdr {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 11px 14px;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .qhdr:hover {
+        background: var(--bg2);
+      }
+      .qnum {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--txi);
+        background: var(--bgi);
+        border-radius: 4px;
+        padding: 2px 7px;
+        white-space: nowrap;
+        margin-top: 1px;
+      }
+      .qnum.ok {
+        background: var(--bgs);
+        color: var(--txs);
+      }
+      .qnum.bad {
+        background: var(--bgd);
+        color: var(--txd);
+      }
+      .qtitle {
+        flex: 1;
+        color: var(--tx1);
+        line-height: 1.5;
+        font-size: 13.5px;
+      }
+      .qicons {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .ibtn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--tx3);
+        font-size: 16px;
+        padding: 2px;
+        transition: color 0.15s;
+        display: flex;
+        align-items: center;
+      }
+      .ibtn:hover {
+        color: var(--tx2);
+      }
+      .ibtn.bmon {
+        color: #ba7517;
+      }
+      .qbody {
+        display: none;
+        padding: 2px 14px 14px;
+      }
+      .qbody.open {
+        display: block;
+      }
+      .opt {
+        display: flex;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 3px;
+        border: 0.5px solid transparent;
+        cursor: pointer;
+        transition:
+          background 0.12s,
+          border-color 0.12s;
+        align-items: flex-start;
+      }
+      .opt:hover {
+        background: var(--bg2);
+      }
+      .opt.rev {
+        background: var(--bgs);
+        color: var(--txs);
+        border-color: var(--bds);
+      }
+      .opt.wrng {
+        background: var(--bgd);
+        color: var(--txd);
+        border-color: var(--bdd);
+      }
+      /* Fill-in-the-blank */
+      .fib-input-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 4px;
+      }
+      .fib-input {
+        flex: 1;
+        min-width: 160px;
+        height: 36px;
+        padding: 0 12px;
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        background: var(--bg1);
+        color: var(--tx1);
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .fib-input:focus {
+        border-color: var(--bd1);
+      }
+      .fib-check {
+        height: 36px;
+        padding: 0 16px;
+        border-radius: var(--rmd);
+        border: none;
+        background: var(--txi);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: var(--font);
+        transition: opacity 0.15s;
+      }
+      .fib-check:hover {
+        opacity: 0.88;
+      }
+      .fib-answer {
+        padding: 10px 13px;
+        border-radius: var(--rmd);
+        background: var(--bgs);
+        color: var(--txs);
+        border: 0.5px solid var(--bds);
+        font-size: 13.5px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .fib-answer.blank {
+        background: var(--bgw);
+        color: var(--txw);
+        border-color: var(--bdw);
+        font-weight: 400;
+        font-style: italic;
+      }
+      .fib-answer.wrongbg {
+        background: var(--bgd);
+        color: var(--txd);
+        border-color: var(--bdd);
+      }
+      .fib-lbl {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        opacity: 0.75;
+        margin-bottom: 3px;
+        font-weight: 600;
+      }
+      .fib-your {
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 400;
+        opacity: 0.85;
+      }
+      .okey {
+        font-weight: 600;
+        min-width: 18px;
+        flex-shrink: 0;
+      }
+      .qfoot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .qfoot button,
+      .rbtn {
+        font-size: 12px;
+        padding: 5px 12px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--bd2);
+        background: transparent;
+        color: var(--tx2);
+        cursor: pointer;
+        font-family: var(--font);
+        transition: background 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .qfoot button:hover,
+      .rbtn:hover {
+        background: var(--bg2);
+      }
+      .anstxt {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--txs);
+        display: none;
+      }
+      .anstxt.show {
+        display: block;
+      }
+      .notearea {
+        width: 100%;
+        margin-top: 8px;
+        font-size: 13px;
+        min-height: 60px;
+        resize: vertical;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--bd2);
+        background: var(--bg2);
+        color: var(--tx1);
+        padding: 8px;
+        font-family: var(--font);
+      }
+      .notearea:focus {
+        outline: none;
+        border-color: var(--bd1);
+      }
+      .nsaved {
+        font-size: 11px;
+        color: var(--tx3);
+        margin-top: 3px;
+      }
+
+      /* Key term highlight */
+      .kterm {
+        background: rgba(24, 95, 165, 0.12);
+        color: var(--txi);
+        border-radius: 3px;
+        padding: 0 3px;
+        font-weight: 500;
+      }
+
+      /* AI explanation box */
+      .ai-box {
+        margin-top: 10px;
+        border: 0.5px solid var(--bdi);
+        border-radius: var(--rmd);
+        background: var(--bgi);
+        padding: 10px 12px;
+        font-size: 12.5px;
+        line-height: 1.6;
+        color: var(--txi);
+      }
+      .ai-box.loading {
+        color: var(--tx3);
+        font-style: italic;
+      }
+      .ai-box.err {
+        background: var(--bgd);
+        border-color: var(--bdd);
+        color: var(--txd);
+      }
+
+      /* Study card (read mode) */
+      .study-card {
+        border: 0.5px solid var(--bd3);
+        border-radius: var(--rlg);
+        margin-bottom: 12px;
+        background: var(--bg1);
+        overflow: hidden;
+      }
+      .sc-q {
+        padding: 16px 18px 12px;
+        font-size: 14.5px;
+        font-weight: 500;
+        line-height: 1.55;
+        color: var(--tx1);
+      }
+      .sc-opts {
+        padding: 0 18px 4px;
+      }
+      .sc-opt {
+        display: flex;
+        gap: 10px;
+        padding: 7px 10px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        margin-bottom: 3px;
+        align-items: flex-start;
+      }
+      .sc-opt.correct {
+        background: var(--bgs);
+        color: var(--txs);
+      }
+      .sc-opt.other {
+        color: var(--tx2);
+      }
+      .sc-opt-key {
+        font-weight: 600;
+        min-width: 18px;
+        flex-shrink: 0;
+      }
+      .sc-ans {
+        padding: 10px 18px 14px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--txs);
+        border-top: 0.5px solid var(--bd3);
+        margin-top: 6px;
+      }
+      .sc-cat {
+        display: inline-block;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--bg3);
+        color: var(--tx3);
+        margin: 0 18px 8px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      /* Category group header */
+      .cat-header {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--tx3);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        padding: 18px 0 6px;
+        border-bottom: 0.5px solid var(--bd3);
+        margin-bottom: 8px;
+      }
+
+      /* Exam mode */
+      #examOverlay {
+        position: fixed;
+        inset: 0;
+        background: var(--bg3);
+        z-index: 100;
+        display: none;
+        flex-direction: column;
+      }
+      #examOverlay.active {
+        display: flex;
+      }
+      .exam-header {
+        background: var(--bg1);
+        border-bottom: 0.5px solid var(--bd3);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+      }
+      .exam-title {
+        font-weight: 600;
+        font-size: 15px;
+        flex: 1;
+      }
+      .exam-timer {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--txi);
+        font-variant-numeric: tabular-nums;
+        min-width: 60px;
+        text-align: right;
+      }
+      .exam-timer.warn {
+        color: var(--txd);
+      }
+      .exam-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+        max-width: 760px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .exam-q {
+        background: var(--bg1);
+        border: 0.5px solid var(--bd3);
+        border-radius: var(--rlg);
+        margin-bottom: 12px;
+        padding: 16px 18px;
+      }
+      .exam-qtext {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.55;
+        margin-bottom: 12px;
+        color: var(--tx1);
+      }
+      .exam-opt {
+        display: flex;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 4px;
+        border: 0.5px solid var(--bd3);
+        cursor: pointer;
+        transition:
+          background 0.12s,
+          border-color 0.12s;
+        align-items: flex-start;
+      }
+      .exam-opt:hover {
+        background: var(--bg2);
+        border-color: var(--bd2);
+      }
+      .exam-opt.sel {
+        background: var(--bgi);
+        color: var(--txi);
+        border-color: var(--bdi);
+      }
+      .exam-opt.correct {
+        background: var(--bgs);
+        color: var(--txs);
+        border-color: var(--bds);
+      }
+      .exam-opt.wrong {
+        background: var(--bgd);
+        color: var(--txd);
+        border-color: var(--bdd);
+      }
+      .exam-footer {
+        background: var(--bg1);
+        border-top: 0.5px solid var(--bd3);
+        padding: 12px 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .exam-btn {
+        padding: 8px 20px;
+        border-radius: var(--rmd);
+        border: none;
+        cursor: pointer;
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 500;
+        transition: opacity 0.15s;
+      }
+      .exam-btn.primary {
+        background: var(--txi);
+        color: #fff;
+      }
+      .exam-btn.primary:hover {
+        opacity: 0.88;
+      }
+      .exam-btn.sec {
+        background: var(--bg2);
+        color: var(--tx1);
+        border: 0.5px solid var(--bd2);
+      }
+      .exam-btn.sec:hover {
+        background: var(--bg3);
+      }
+      .exam-prog {
+        flex: 1;
+        font-size: 12px;
+        color: var(--tx3);
+      }
+
+      /* Score modal */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 200;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-bg.active {
+        display: flex;
+      }
+      .modal {
+        background: var(--bg1);
+        border-radius: 16px;
+        padding: 28px 32px;
+        max-width: 420px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+      .modal h2 {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      .modal .score-big {
+        font-size: 56px;
+        font-weight: 700;
+        margin: 12px 0 4px;
+      }
+      .modal .score-big.pass {
+        color: var(--txs);
+      }
+      .modal .score-big.fail {
+        color: var(--txd);
+      }
+      .modal p {
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 18px;
+      }
+      .modal-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .modal-btns button {
+        padding: 8px 18px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--bd2);
+        background: var(--bg2);
+        color: var(--tx1);
+        cursor: pointer;
+        font-family: var(--font);
+        font-size: 13px;
+        transition: background 0.15s;
+      }
+      .modal-btns button:hover {
+        background: var(--bg3);
+      }
+      .modal-btns button.primary {
+        background: var(--txi);
+        color: #fff;
+        border-color: transparent;
+      }
+      .modal-btns button.primary:hover {
+        opacity: 0.88;
+      }
+
+      /* History panel */
+      #historyPanel {
+        background: var(--bg1);
+        border: 0.5px solid var(--bd3);
+        border-radius: var(--rlg);
+        padding: 16px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      #historyPanel h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .hist-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 0.5px solid var(--bd3);
+        font-size: 12px;
+      }
+      .hist-row:last-child {
+        border-bottom: none;
+      }
+      .hist-score {
+        font-weight: 700;
+        min-width: 46px;
+      }
+      .hist-score.pass {
+        color: var(--txs);
+      }
+      .hist-score.fail {
+        color: var(--txd);
+      }
+      .hist-meta {
+        color: var(--tx3);
+        flex: 1;
+      }
+      .hist-badge {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: var(--bg2);
+      }
+
+      /* Settings modal */
+      .settings-modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 400;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .settings-modal-bg.active {
+        display: flex;
+      }
+      .settings-modal {
+        background: var(--bg1);
+        border-radius: 14px;
+        padding: 24px 26px;
+        max-width: 400px;
+        width: 92%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .settings-modal h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .settings-modal .s-sub {
+        font-size: 12px;
+        color: var(--tx3);
+        margin-bottom: 18px;
+      }
+      .s-section {
+        margin-bottom: 20px;
+      }
+      .s-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--tx3);
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        margin-bottom: 8px;
+      }
+      .s-provider-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .s-provider-btn {
+        flex: 1;
+        padding: 10px 8px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--bd2);
+        background: var(--bg2);
+        color: var(--tx2);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: var(--font);
+        transition: all 0.15s;
+        text-align: center;
+      }
+      .s-provider-btn:hover {
+        background: var(--bg3);
+      }
+      .s-provider-btn.sel {
+        background: var(--bgi);
+        color: var(--txi);
+        border-color: var(--bdi);
+      }
+      .s-field {
+        margin-bottom: 10px;
+      }
+      .s-field label {
+        display: block;
+        font-size: 12px;
+        color: var(--tx2);
+        margin-bottom: 4px;
+      }
+      .s-field input {
+        width: 100%;
+        height: 36px;
+        padding: 0 10px;
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        background: var(--bg2);
+        color: var(--tx1);
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .s-field input:focus {
+        border-color: var(--bd1);
+      }
+      .s-hint {
+        font-size: 11.5px;
+        color: var(--tx3);
+        line-height: 1.5;
+        padding: 8px 10px;
+        background: var(--bg2);
+        border-radius: var(--rmd);
+        margin-top: 6px;
+      }
+      .s-hint a {
+        color: var(--txi);
+        text-decoration: none;
+      }
+      .s-hint a:hover {
+        text-decoration: underline;
+      }
+      .s-status-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        font-size: 12px;
+      }
+      .s-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--tx3);
+        flex-shrink: 0;
+      }
+      .s-dot.on {
+        background: var(--txs);
+      }
+      .s-dot.off {
+        background: var(--txd);
+      }
+      .settings-modal-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 6px;
+      }
+      .settings-modal-btns button {
+        padding: 8px 18px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        font-family: var(--font);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .sbtn-cancel {
+        background: transparent;
+        border: 0.5px solid var(--bd2);
+        color: var(--tx2);
+      }
+      .sbtn-cancel:hover {
+        background: var(--bg2);
+      }
+      .sbtn-save {
+        background: var(--txi);
+        color: #fff;
+        border: none;
+        font-weight: 500;
+      }
+      .sbtn-save:hover {
+        opacity: 0.88;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--bg1);
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        padding: 8px 16px;
+        font-size: 13px;
+        color: var(--tx2);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 300;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+
+      /* Debug */
+      .dbg {
+        font-size: 11px;
+        color: var(--tx3);
+        background: var(--bg2);
+        border-radius: var(--rmd);
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        display: none;
+        font-family: monospace;
+        white-space: pre-wrap;
+        max-height: 120px;
+        overflow: auto;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--tx2);
+      }
+      .empty i {
+        font-size: 28px;
+        display: block;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="toast" id="toast"></div>
+
+      <!-- Score modal -->
+      <div class="modal-bg" id="scoreMod">
+        <div class="modal">
+          <h2 id="modTitle">Exam Complete</h2>
+          <div class="score-big" id="modScore"></div>
+          <p id="modSub"></p>
+          <div class="modal-btns">
+            <!-- <button onclick="closeModal();retakeWrong()"><i class="ti ti-refresh"></i> Retake Wrong</button> -->
+            <button
+              onclick="
+                closeModal();
+                document
+                  .getElementById('examOverlay')
+                  .classList.remove('active');
+                showHistory();
+              "
+            >
+              <i class="ti ti-history"></i> History
+            </button>
+            <button class="primary" onclick="closeModal()">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam overlay -->
+      <div id="examOverlay">
+        <div class="exam-header">
+          <div class="exam-title" id="examTitle">Exam</div>
+          <div style="font-size: 12px; color: var(--tx3)" id="examQProg"></div>
+          <div class="exam-timer" id="examTimer"></div>
+        </div>
+        <div class="exam-body" id="examBody"></div>
+        <div class="exam-footer">
+          <div class="exam-prog" id="examFootProg"></div>
+          <button class="exam-btn sec" onclick="cancelExam()">Cancel</button>
+          <button
+            class="exam-btn primary"
+            id="examSubmitBtn"
+            onclick="submitExam()"
+          >
+            Submit Exam
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings modal -->
+      <div class="settings-modal-bg" id="settingsModal">
+        <div class="settings-modal">
+          <h3>Settings</h3>
+          <p class="s-sub">Configure AI explanations and preferences.</p>
+
+          <div class="s-section">
+            <div class="s-label">AI Provider for Explanations</div>
+            <div class="s-provider-row">
+              <button
+                class="s-provider-btn sel"
+                id="spFree"
+                onclick="selectProvider('free')"
+              >
+                <i
+                  class="ti ti-planet"
+                  style="font-size: 14px; display: block; margin: 0 auto 4px"
+                ></i>
+                Free (OpenRouter)
+              </button>
+              <button
+                class="s-provider-btn"
+                id="spGemini"
+                onclick="selectProvider('gemini')"
+              >
+                <i
+                  class="ti ti-brand-google"
+                  style="font-size: 14px; display: block; margin: 0 auto 4px"
+                ></i>
+                Google Gemini
+              </button>
+            </div>
+
+            <div id="sGeminiFields" style="display: none">
+              <div class="s-field">
+                <label>Gemini API Key</label>
+                <input
+                  type="password"
+                  id="sGeminiKey"
+                  placeholder="AIza…"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="s-field">
+                <label>Model</label>
+                <select
+                  id="sGeminiModel"
+                  style="
+                    width: 100%;
+                    height: 36px;
+                    padding: 0 10px;
+                    border: 0.5px solid var(--bd2);
+                    border-radius: var(--rmd);
+                    background: var(--bg2);
+                    color: var(--tx1);
+                    font-size: 13px;
+                    font-family: var(--font);
+                    outline: none;
+                    cursor: pointer;
+                  "
+                >
+                  <option value="gemini-2.5-flash">
+                    gemini-2.5-flash (recommended, free tier)
+                  </option>
+                  <option value="gemini-2.5-flash-lite">
+                    gemini-2.5-flash-lite (fastest, free tier)
+                  </option>
+                  <option value="gemini-2.0-flash">
+                    gemini-2.0-flash (stable)
+                  </option>
+                  <option value="gemini-2.5-pro">
+                    gemini-2.5-pro (most capable, may require billing)
+                  </option>
+                </select>
+              </div>
+              <div class="s-hint">
+                Get a free key at
+                <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                  >aistudio.google.com</a
+                >
+                — no credit card needed. If you hit quota errors, try a
+                different model or create a new project. Key saved in your
+                browser only.
+              </div>
+            </div>
+
+            <div id="sFreeInfo" style="display: block">
+              <div class="s-field">
+                <label>OpenRouter API Key</label>
+                <input
+                  type="password"
+                  id="sOpenRouterKey"
+                  placeholder="sk-or-v1-…"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="s-hint">
+                Get a free key at
+                <a href="https://openrouter.ai/keys" target="_blank"
+                  >openrouter.ai/keys</a
+                >
+                — free models available, no card needed for those. Key saved in
+                your browser only.
+              </div>
+            </div>
+
+            <div class="s-status-row">
+              <span class="s-dot" id="sProviderDot"></span>
+              <span id="sProviderStatus" style="color: var(--tx2)"></span>
+            </div>
+          </div>
+
+          <div class="settings-modal-btns">
+            <button class="sbtn-cancel" onclick="closeSettings()">
+              Cancel
+            </button>
+            <button class="sbtn-save" onclick="saveSettings()">
+              <i class="ti ti-device-floppy" style="font-size: 13px"></i> Save
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          margin-bottom: 4px;
+        "
+      >
+        <h1>PDF Study Guide</h1>
+        <div style="display: flex; gap: 6px; align-items: center">
+          <button
+            id="themeToggle"
+            onclick="cycleTheme()"
+            title="Switch theme"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 5px;
+              font-size: 12px;
+              padding: 5px 11px;
+              border-radius: var(--rmd);
+              border: 0.5px solid var(--bd2);
+              background: var(--bg2);
+              color: var(--tx2);
+              cursor: pointer;
+              font-family: var(--font);
+              transition: background 0.15s;
+            "
+            onmouseover="this.style.background = 'var(--bg3)'"
+            onmouseout="this.style.background = 'var(--bg2)'"
+          >
+            <i class="ti ti-sun-moon" style="font-size: 14px"></i>&nbsp;<span
+              id="themeLabel"
+              >Auto</span
+            >
+          </button>
+          <button
+            onclick="openSettings()"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 5px;
+              font-size: 12px;
+              padding: 5px 11px;
+              border-radius: var(--rmd);
+              border: 0.5px solid var(--bd2);
+              background: var(--bg2);
+              color: var(--tx2);
+              cursor: pointer;
+              font-family: var(--font);
+              transition: background 0.15s;
+            "
+            onmouseover="this.style.background = 'var(--bg3)'"
+            onmouseout="this.style.background = 'var(--bg2)'"
+          >
+            <i class="ti ti-settings" style="font-size: 14px"></i> Settings
+          </button>
+        </div>
+      </div>
+      <p class="sub">
+        Upload any exam PDF — browse, quiz, read, or simulate an exam.
+      </p>
+
+      <div class="upload-zone" id="dropZone">
+        <input type="file" id="pdfInput" accept=".pdf" />
+        <i class="ti ti-file-upload"></i>
+        <p class="main">Drop your exam PDF here</p>
+        <p class="hint">or click to browse</p>
+        <p id="uStatus"></p>
+      </div>
+
+      <div class="pbar-wrap" id="pbarWrap">
+        <div class="ptrack">
+          <div class="pfill" id="pbarFill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="dbgBox" class="dbg"></div>
+
+      <div id="dashboard" style="display: none">
+        <div class="metrics" id="metricsRow"></div>
+        <div class="prog-row">
+          <div class="ptrack">
+            <div class="pfill" id="quizProg" style="width: 0%"></div>
+          </div>
+          <div class="plabel" id="quizLbl">0 of 0 answered</div>
+        </div>
+
+        <!-- History panel -->
+        <div id="historyPanel">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 10px;
+            "
+          >
+            <h3 style="margin: 0">Attempt History</h3>
+            <div style="display: flex; gap: 6px; align-items: center">
+              <button
+                class="pill danger"
+                id="clearHistBtn"
+                onclick="clearHistory()"
+                style="font-size: 11px; padding: 3px 10px"
+              >
+                <i class="ti ti-trash"></i> Clear
+              </button>
+              <button class="pill" onclick="hideHistory()">
+                <i class="ti ti-x"></i>
+              </button>
+            </div>
+          </div>
+          <div id="historyList"></div>
+        </div>
+
+        <!-- Exam duration modal -->
+        <div class="exam-modal-bg" id="examDurModal">
+          <div class="exam-modal">
+            <h3>Start Exam</h3>
+            <p>Choose a time limit for your exam session.</p>
+            <div class="dur-row" id="durBtns">
+              <div class="dur-btn sel" data-mins="30" onclick="selectDur(this)">
+                30 min
+              </div>
+              <div class="dur-btn" data-mins="45" onclick="selectDur(this)">
+                45 min
+              </div>
+              <div class="dur-btn" data-mins="60" onclick="selectDur(this)">
+                60 min
+              </div>
+              <div class="dur-btn" data-mins="90" onclick="selectDur(this)">
+                90 min
+              </div>
+            </div>
+            <div class="custom-row">
+              <input
+                type="number"
+                id="customMins"
+                placeholder="Custom…"
+                min="1"
+                max="300"
+              />
+              <span>minutes</span>
+            </div>
+            <div class="exam-modal-btns">
+              <button class="btn-cancel" onclick="closeExamModal()">
+                Cancel
+              </button>
+              <button class="btn-start" onclick="confirmStartExam()">
+                <i class="ti ti-writing" style="font-size: 13px"></i> Begin Exam
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom confirm modal -->
+        <div class="confirm-modal-bg" id="confirmModal">
+          <div class="confirm-modal">
+            <p id="confirmMsg"></p>
+            <div class="confirm-modal-btns">
+              <button class="cbtn-cancel" onclick="resolveConfirm(false)">
+                Cancel
+              </button>
+              <button
+                class="cbtn-ok"
+                id="confirmOkBtn"
+                onclick="resolveConfirm(true)"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <!-- Row 1: Search + Filter -->
+          <div class="toolbar-row">
+            <span class="toolbar-label">Filter</span>
+            <div class="search-wrap">
+              <i class="ti ti-search"></i>
+              <input
+                type="text"
+                id="searchIn"
+                placeholder="Search questions…"
+              />
+            </div>
+            <div class="pgroup">
+              <button class="pill on" id="fAll" onclick="setFilter('all')">
+                All
+              </button>
+              <button class="pill" id="fUnseen" onclick="setFilter('unseen')">
+                <i class="ti ti-eye-off"></i> Unseen
+              </button>
+              <button class="pill" id="fWrong" onclick="setFilter('wrong')">
+                <i class="ti ti-x"></i> Wrong
+              </button>
+              <button class="pill" id="fRight" onclick="setFilter('right')">
+                <i class="ti ti-check"></i> Correct
+              </button>
+              <button class="pill" id="fBm" onclick="setFilter('bookmarked')">
+                <i class="ti ti-bookmark"></i> Saved
+              </button>
+              <button
+                class="pill"
+                id="fFailed"
+                onclick="setFilter('retake')"
+                title="Retake failed"
+              >
+                <i class="ti ti-reload"></i> Retake
+              </button>
+            </div>
+          </div>
+          <!-- Row 2: Mode + Actions -->
+          <div class="toolbar-row">
+            <span class="toolbar-label">Mode</span>
+            <div class="pgroup">
+              <button class="pill" id="mBrowse" onclick="setMode('browse')">
+                <i class="ti ti-list"></i> Browse
+              </button>
+              <button class="pill on" id="mQuiz" onclick="setMode('quiz')">
+                <i class="ti ti-bolt"></i> Quiz
+              </button>
+              <button class="pill" id="mRead" onclick="setMode('read')">
+                <i class="ti ti-book"></i> Read
+              </button>
+              <button class="pill" id="mNotes" onclick="setMode('notes')">
+                <i class="ti ti-note"></i> Notes
+              </button>
+              <button class="pill" onclick="showHistory()">
+                <i class="ti ti-history"></i> Exam History
+              </button>
+            </div>
+            <div class="toolbar-divider"></div>
+            <div class="pgroup">
+              <button class="pill" onclick="shuffleQs()">
+                <i class="ti ti-arrows-shuffle"></i> Shuffle
+              </button>
+              <button
+                class="pill"
+                id="btnShuffleAns"
+                onclick="toggleShuffleAnswers()"
+              >
+                <i class="ti ti-switch-horizontal"></i> Shuffle Answers
+              </button>
+              <button class="pill" onclick="openExamModal()">
+                <i class="ti ti-writing"></i> Exam
+              </button>
+              <button class="pill" onclick="retakeWrong()">
+                <i class="ti ti-reload"></i> Retake Wrong
+              </button>
+              <button class="pill danger" onclick="safeResetAll()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="qList"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      (function () {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+        // ── State ────────────────────────────────────────────────────────────────────
+        let allQ = [],
+          state = {},
+          mode = "quiz",
+          filterKey = "all",
+          order = [],
+          shuffleAnswers = false,
+          ansOrders = {};
+        let currentPdfName = "";
+        let examQ = [],
+          examAnswers = {},
+          examTimerInt = null,
+          examSecondsLeft = 0,
+          examRevealed = false;
+
+        let history = JSON.parse(localStorage.getItem("sg_history") || "[]");
+        let aiProvider = localStorage.getItem("sg_provider") || "free";
+        let geminiKey = localStorage.getItem("sg_gemini_key") || "";
+        let geminiModel =
+          localStorage.getItem("sg_gemini_model") || "gemini-2.5-flash";
+        // No embedded key in source. Key is loaded from the server's env at runtime.
+        const OPENROUTER_FREE_KEY = "";
+        let openRouterKey =
+          localStorage.getItem("sg_or_key") || OPENROUTER_FREE_KEY;
+
+        // Load key from server env. Only works when running `node server.js`
+        // (e.g. on Render/Railway). On static hosting this fetch fails silently
+        // and the app falls back to a user-supplied key from Settings.
+        (async () => {
+          try {
+            const r = await fetch("/api/config");
+            if (r.ok) {
+              const cfg = await r.json();
+              if (cfg.openRouterKey)
+                openRouterKey =
+                  localStorage.getItem("sg_or_key") || cfg.openRouterKey;
+            }
+          } catch (e) {
+            /* no server — user supplies their own key in Settings */
+          }
+        })();
+        let retakeList = [];
+        const $ = (id) => document.getElementById(id);
+        // ── Theme toggle ─────────────────────────────────────────────────────────
+        (function () {
+          try {
+            const t = localStorage.getItem("sg_theme") || "auto";
+            if (t === "light" || t === "dark")
+              document.documentElement.setAttribute("data-theme", t);
+          } catch (e) {}
+          try {
+            const t = localStorage.getItem("sg_theme") || "auto";
+            const l = document.getElementById("themeLabel");
+            if (l) l.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+          } catch (e) {}
+        })();
+        window.cycleTheme = function () {
+          let t = "auto";
+          try {
+            t = localStorage.getItem("sg_theme") || "auto";
+          } catch (e) {}
+          const next = t === "auto" ? "light" : t === "light" ? "dark" : "auto";
+          try {
+            localStorage.setItem("sg_theme", next);
+          } catch (e) {}
+          if (next === "auto")
+            document.documentElement.removeAttribute("data-theme");
+          else document.documentElement.setAttribute("data-theme", next);
+          const l = document.getElementById("themeLabel");
+          if (l) l.textContent = next.charAt(0).toUpperCase() + next.slice(1);
+        };
+
+        const escHtml = (s) =>
+          (s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        const normFib = (s) =>
+          (s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+        // ── Shuffled answer order ─────────────────────────────────────────────────
+        function getOptOrder(qi) {
+          const o = allQ[qi].opts || {};
+          if (!shuffleAnswers) return Object.keys(o);
+          if (!ansOrders[qi]) {
+            const keys = Object.keys(o);
+            for (let i = keys.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [keys[i], keys[j]] = [keys[j], keys[i]];
+            }
+            ansOrders[qi] = keys;
+          }
+          return ansOrders[qi];
+        }
+
+        // Key terms to highlight in read mode
+        const KEY_TERMS = [
+          "carbon",
+          "greenhouse",
+          "emissions",
+          "fossil fuels",
+          "renewable",
+          "sequestration",
+          "carbon footprint",
+          "carbon offset",
+          "carbon tax",
+          "net-zero",
+          "paris agreement",
+          "kyoto",
+          "methane",
+          "co2",
+          "carbon dioxide",
+          "climate change",
+          "global warming",
+          "deforestation",
+          "afforestation",
+          "reforestation",
+          "carbon capture",
+          "cap-and-trade",
+          "carbon neutral",
+          "photosynthesis",
+          "ozone",
+          "cfcs",
+          "nitrous oxide",
+          "carbon sink",
+          "carbon cycle",
+        ];
+
+        function toast(msg) {
+          const t = $("toast");
+          t.textContent = msg;
+          t.classList.add("show");
+          setTimeout(() => t.classList.remove("show"), 2400);
+        }
+
+        function copyToClipboard(text) {
+          if (!text) {
+            toast("Nothing to copy.");
+            return;
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(
+              () => toast("Copied to clipboard"),
+              () => toast("Copy failed"),
+            );
+          } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.top = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+              document.execCommand("copy");
+              toast("Copied to clipboard");
+            } catch (e) {
+              toast("Copy failed");
+            }
+            document.body.removeChild(textarea);
+          }
+        }
+
+        window.copyQuestion = function (qi) {
+          const q = allQ[qi];
+          if (!q) return;
+          copyToClipboard(q.q);
+        };
+
+        // ── Settings ─────────────────────────────────────────────────────────────────
+        function updateSettingsUI() {
+          const isFree = aiProvider === "free";
+          $("spFree").classList.toggle("sel", isFree);
+          $("spGemini").classList.toggle("sel", !isFree);
+          $("sGeminiFields").style.display = isFree ? "none" : "block";
+          $("sFreeInfo").style.display = isFree ? "block" : "none";
+          if (!isFree && geminiKey) {
+            $("sProviderDot").className = "s-dot on";
+            $("sProviderStatus").textContent = "Gemini key saved";
+          } else if (!isFree && !geminiKey) {
+            $("sProviderDot").className = "s-dot off";
+            $("sProviderStatus").textContent = "No key set — enter one below";
+          } else if (isFree && openRouterKey) {
+            $("sProviderDot").className = "s-dot on";
+            $("sProviderStatus").textContent = "OpenRouter key saved";
+          } else {
+            $("sProviderDot").className = "s-dot off";
+            $("sProviderStatus").textContent = "No key set — enter one below";
+          }
+        }
+
+        window.selectProvider = function (p) {
+          aiProvider = p;
+          updateSettingsUI();
+        };
+
+        window.openSettings = function () {
+          if (geminiKey) $("sGeminiKey").value = "";
+          if (openRouterKey) $("sOpenRouterKey").value = "";
+          $("sGeminiModel").value = geminiModel;
+          updateSettingsUI();
+          $("settingsModal").classList.add("active");
+        };
+
+        window.closeSettings = function () {
+          $("settingsModal").classList.remove("active");
+        };
+
+        window.saveSettings = function () {
+          const geminiKeyVal = $("sGeminiKey").value.trim();
+          const openRouterKeyVal = $("sOpenRouterKey").value.trim();
+          if (aiProvider === "gemini") {
+            if (geminiKeyVal) geminiKey = geminiKeyVal;
+            if (!geminiKey) {
+              toast("Enter a Gemini API key to use Gemini.");
+              return;
+            }
+          } else {
+            if (openRouterKeyVal) openRouterKey = openRouterKeyVal;
+            if (!openRouterKey) {
+              toast("Enter an OpenRouter API key to use free AI.");
+              return;
+            }
+          }
+          localStorage.setItem("sg_provider", aiProvider);
+          if (geminiKey) {
+            localStorage.setItem("sg_gemini_key", geminiKey);
+          } else {
+            localStorage.removeItem("sg_gemini_key");
+          }
+          if (openRouterKey) {
+            localStorage.setItem("sg_or_key", openRouterKey);
+          } else {
+            localStorage.removeItem("sg_or_key");
+          }
+          geminiModel = $("sGeminiModel").value;
+          localStorage.setItem("sg_gemini_model", geminiModel);
+          updateSettingsUI();
+          closeSettings();
+          toast(
+            aiProvider === "gemini"
+              ? "Gemini AI enabled ✓"
+              : "Free AI enabled ✓",
+          );
+        };
+
+        // Init settings UI on load
+        updateSettingsUI();
+
+        // ── Upload & Parse ───────────────────────────────────────────────────────────
+        $("dropZone").addEventListener("click", () => $("pdfInput").click());
+        $("dropZone").addEventListener("dragover", (e) => {
+          e.preventDefault();
+          $("dropZone").style.borderColor = "var(--bd1)";
+        });
+        $("dropZone").addEventListener(
+          "dragleave",
+          () => ($("dropZone").style.borderColor = ""),
+        );
+        $("dropZone").addEventListener("drop", (e) => {
+          e.preventDefault();
+          $("dropZone").style.borderColor = "";
+          const f = e.dataTransfer.files[0];
+          if (f) loadFile(f);
+        });
+        $("pdfInput").addEventListener("change", (e) => {
+          if (e.target.files[0]) loadFile(e.target.files[0]);
+        });
+        $("searchIn").addEventListener("input", render);
+
+        async function loadFile(file) {
+          const st = $("uStatus");
+          st.textContent = "Reading PDF…";
+          $("pbarWrap").style.display = "block";
+          $("pbarFill").style.width = "5%";
+          $("dashboard").style.display = "none";
+          $("qList").innerHTML = "";
+          $("dbgBox").style.display = "none";
+          try {
+            const buf = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            let rawLines = [];
+            for (let i = 1; i <= pdf.numPages; i++) {
+              const pg = await pdf.getPage(i);
+              const c = await pg.getTextContent();
+              const items = c.items;
+              let pageLines = [];
+              let curLine = "",
+                lastY = null;
+              for (const it of items) {
+                const y = it.transform ? Math.round(it.transform[5]) : null;
+                const txt = it.str;
+                if (lastY !== null && y !== null && Math.abs(y - lastY) > 3) {
+                  if (curLine.trim()) pageLines.push(curLine.trim());
+                  curLine = txt;
+                } else {
+                  curLine += txt;
+                }
+                lastY = y;
+              }
+              if (curLine.trim()) pageLines.push(curLine.trim());
+              rawLines = rawLines.concat(pageLines);
+              $("pbarFill").style.width =
+                Math.round((i / pdf.numPages) * 70) + "%";
+            }
+
+            function cleanAndSplit(raw) {
+              // Normalise unicode quirks PDFs introduce, but KEEP lines intact so the
+              // format-aware parser can decide how to split each format.
+              const out = [];
+              for (let line of raw) {
+                let s = line
+                  .replace(/\u00A0/g, " ") // nbsp
+                  .replace(/[\u2018\u2019]/g, "'") // smart single quotes
+                  .replace(/[\u201C\u201D]/g, '"') // smart double quotes
+                  .replace(/\uFFFD/g, "") // replacement char (mojibake)
+                  .replace(/[\u00C2\u00C3]\s*/g, "") // stray characters from bad encoding
+                  .replace(/\s+/g, " ")
+                  .trim();
+                if (!s) continue;
+                // Split a line that crams a question and its "Answer:" together
+                const subparts = s.split(/(?=\bAnswer\s*:)/i);
+                for (let sp of subparts) {
+                  if (sp.trim()) out.push(sp.trim());
+                }
+              }
+              return out;
+            }
+            const lines = cleanAndSplit(rawLines).filter((l) => l.length > 0);
+
+            $("pbarFill").style.width = "80%";
+            st.textContent = "Parsing questions…";
+            allQ = parse(lines);
+            $("pbarFill").style.width = "100%";
+
+            const dbgSample = lines.slice(0, 60).join("\n");
+            $("dbgBox").textContent =
+              "Extracted " +
+              lines.length +
+              " lines, parsed " +
+              allQ.length +
+              " questions.\n\nFirst 60 lines:\n\n" +
+              dbgSample;
+
+            if (!allQ.length || allQ.length < 3) {
+              $("dbgBox").style.display = "block";
+              if (!allQ.length) {
+                st.textContent = "⚠ No questions found. See debug info below.";
+                $("pbarWrap").style.display = "none";
+                return;
+              }
+            }
+
+            state = {};
+            order = allQ.map((_, i) => i);
+            retakeList = [];
+            currentPdfName = file.name.replace(/\.pdf$/i, "");
+            st.textContent =
+              "✓ " + file.name + " · " + allQ.length + " questions loaded";
+            $("dashboard").style.display = "block";
+            updateMetrics();
+            render();
+            setTimeout(() => ($("pbarWrap").style.display = "none"), 600);
+          } catch (e) {
+            st.textContent = "Error: " + e.message;
+            $("pbarWrap").style.display = "none";
+          }
+        }
+
+        // ── Parser ───────────────────────────────────────────────────────────────────
+        // Handles three real-world exam formats from a single entry point:
+        //   1. MCQ with inline options + answer marker:
+        //        Q1. Stem?  (a) X (b) Y (c) Z (d) W   /   Right answer: (c)
+        //   2. MCQ with one option per line (letter/number prefixed)
+        //   3. Fill-in-the-blank:  Question 1: stem ___   /   Answer: value
+        // Tolerates "Q"/"Question" prefixes, space separators, malformed "# (b)"
+        // markers, and parentheses inside option text like "(BFS)".
+
+        function parse(lines) {
+          function stripMd(s) {
+            return (s || "")
+              .replace(/\*\*([^*]+)\*\*/g, "$1")
+              .replace(/__([^_]+)__/g, "$1")
+              .replace(/\*([^*]+)\*/g, "$1")
+              .replace(/\*+/g, "")
+              .replace(/\s{2,}/g, " ")
+              .trim();
+          }
+          function extractTrailingAns(s) {
+            const re =
+              /[\s\-\u2013\u2014]*\**\s*(?:right\s+|correct\s+)?answer\s*\**\s*[:.]?\s*\**\s*\(?\s*([A-Ea-e1-5])\s*\)?\s*\**\s*$/i;
+            const m = s.match(re);
+            if (!m) return { text: stripMd(s), ans: null };
+            const v = m[1];
+            return {
+              text: stripMd(s.slice(0, m.index)),
+              ans: /[1-5]/.test(v)
+                ? String.fromCharCode(64 + parseInt(v))
+                : v.toUpperCase(),
+            };
+          }
+          function splitInline(str) {
+            const re = /(^|\s)\(([a-eA-E])\)/g;
+            const hits = [];
+            let m;
+            while ((m = re.exec(str)) !== null)
+              hits.push({
+                key: m[2].toUpperCase(),
+                labelStart: m.index + m[1].length,
+                textStart: re.lastIndex,
+              });
+            if (hits.length < 2) return null;
+            const want = ["A", "B", "C", "D", "E"];
+            const ordered = [];
+            let ex = 0;
+            for (const h of hits) {
+              if (h.key === want[ex]) {
+                ordered.push(h);
+                ex++;
+              }
+            }
+            if (ordered.length < 2) return null;
+            const opts = {};
+            for (let i = 0; i < ordered.length; i++) {
+              opts[ordered[i].key] = str
+                .slice(
+                  ordered[i].textStart,
+                  i + 1 < ordered.length
+                    ? ordered[i + 1].labelStart
+                    : str.length,
+                )
+                .trim();
+            }
+            return { stem: str.slice(0, ordered[0].labelStart).trim(), opts };
+          }
+          function matchOpt(line) {
+            const s = line.replace(/^[-\u2013\u2014\u2022]\s*/, "");
+            let m = s.match(/^([A-Ea-e])\s*[.):\-]\s*(.*)/);
+            if (m) return { key: m[1].toUpperCase(), text: m[2].trim() };
+            m = s.match(/^([A-Ea-e])$/);
+            if (m) return { key: m[1].toUpperCase(), text: "" };
+            m = s.match(/^([1-5])\s*[.):\-]\s+(.+)/);
+            if (m)
+              return {
+                key: String.fromCharCode(64 + parseInt(m[1])),
+                text: m[2].trim(),
+              };
+            return null;
+          }
+          function matchAns(line) {
+            // Pattern 1: strict — whole line is just the answer marker (e.g. "Answer: A" or "Answer: (A)")
+            const m = line.match(
+              /^\s*\**\s*(?:right\s+|correct\s+)?ans(?:wer)?\s*\**\s*[:.]?\s*#?\s*\(?\s*([A-Ea-e1-5])\s*\)?[.):\s]?\s*\**\s*$/i,
+            );
+            if (m) {
+              const v = m[1];
+              return /[1-5]/.test(v)
+                ? String.fromCharCode(64 + parseInt(v))
+                : v.toUpperCase();
+            }
+            // Pattern 2: answer line with full text after the letter
+            // e.g. "Answer: A) Input, Output, Constraints, Goal"
+            // e.g. "Answer: a) A task that requires..."
+            const n = line.match(
+              /^\s*\**\s*(?:right\s+|correct\s+)?ans(?:wer)?\s*\**\s*[:.]?\s*#?\s*\(?\s*([A-Ea-e1-5])\s*\)?[.):\s]/i,
+            );
+            if (n) {
+              const v = n[1];
+              return /[1-5]/.test(v)
+                ? String.fromCharCode(64 + parseInt(v))
+                : v.toUpperCase();
+            }
+            const b = line.trim().match(/^#?\s*\(?\s*([A-Ea-e1-5])\s*\)?\.?$/);
+            if (b) {
+              const v = b[1];
+              return /[1-5]/.test(v)
+                ? String.fromCharCode(64 + parseInt(v))
+                : v.toUpperCase();
+            }
+            return null;
+          }
+          function isAnsLine(l) {
+            return matchAns(l) !== null;
+          }
+          function matchFibAns(line) {
+            const m = line.replace(/\*/g, "").match(/^answer\s*[:.]\s*(.*)$/i);
+            return m ? { text: m[1].trim() } : null;
+          }
+          const reQNum =
+            /^\**\s*(?:question\s+|q\s*)?([0-9]+|[A-Za-z]{1,6}[0-9]+)\s*[.):\-]\s*(.+)$/i;
+          const reQSpc =
+            /^\**\s*(?:question\s+|q\s*)([0-9]+|[A-Za-z]{1,6}[0-9]+)\s+(.+)$/i;
+          function parseQStart(line) {
+            let m = line.match(reQNum);
+            if (m) return { id: m[1], rest: stripMd(m[2].trim()) };
+            m = line.match(reQSpc);
+            if (m) return { id: m[1], rest: stripMd(m[2].trim()) };
+            return null;
+          }
+          function looksLikeBareQ(line, next) {
+            if (
+              matchOpt(line) ||
+              isAnsLine(line) ||
+              matchFibAns(line) ||
+              splitInline(line)
+            )
+              return false;
+            const c = stripMd(line);
+            if (!c || c.length < 6) return false;
+            const isBold = /^\s*\*\*.*\*\*\s*$/.test(line);
+            const endsQ = /[?:]\s*$/.test(c);
+            const nextOpt =
+              next !== undefined && (matchOpt(next) || !!splitInline(next));
+            return (isBold || endsQ) && nextOpt;
+          }
+          const qs = [];
+          const total = lines.length;
+          let i = 0,
+            qctr = 0;
+          while (i < total) {
+            let start = parseQStart(lines[i]);
+            let bareQ = false;
+            if (!start) {
+              if (looksLikeBareQ(lines[i], lines[i + 1])) {
+                start = { id: String(qctr + 1), rest: stripMd(lines[i]) };
+                bareQ = true;
+              } else {
+                i++;
+                continue;
+              }
+            }
+            qctr++;
+            let qText = start.rest;
+            i++;
+            let stemParts = [qText];
+            if (!bareQ) {
+              const bareOptRunAt = (k) => {
+                let n = 0;
+                for (let t = k; t < total && n < 6; t++) {
+                  const c = stripMd(lines[t]);
+                  if (
+                    !c ||
+                    c.length > 40 ||
+                    /[.?!]$/.test(c) ||
+                    c.split(/\s+/).length > 5
+                  )
+                    break;
+                  if (
+                    parseQStart(lines[t]) ||
+                    matchOpt(lines[t]) ||
+                    isAnsLine(lines[t]) ||
+                    matchFibAns(lines[t]) ||
+                    splitInline(lines[t])
+                  )
+                    break;
+                  n++;
+                }
+                return n >= 3;
+              };
+              const stemDone = () => {
+                const st = stemParts.join(" ").trim();
+                return (
+                  /(\.{2,}|\u2026|[?:]|_{2,})\s*$/.test(st) || st.length >= 10
+                );
+              };
+              while (i < total) {
+                const l = lines[i];
+                if (
+                  parseQStart(l) ||
+                  matchOpt(l) ||
+                  isAnsLine(l) ||
+                  matchFibAns(l) ||
+                  splitInline(l)
+                )
+                  break;
+                if (looksLikeBareQ(l, lines[i + 1])) break;
+                if (stemDone() && bareOptRunAt(i)) break;
+                if (l.trim()) stemParts.push(stripMd(l.trim()));
+                i++;
+              }
+            }
+            qText = stemParts.join(" ").trim();
+            let opts = {},
+              gluedAns = null;
+            const inlS = splitInline(qText);
+            if (inlS) {
+              if (inlS.stem) qText = stripMd(inlS.stem);
+              opts = inlS.opts;
+            } else {
+              if (i < total) {
+                const inl = splitInline(lines[i]);
+                if (inl && !parseQStart(lines[i])) {
+                  if (inl.stem)
+                    qText = stripMd((qText + " " + inl.stem).trim());
+                  opts = inl.opts;
+                  i++;
+                }
+              }
+              if (Object.keys(opts).length === 0) {
+                let optStyle = null;
+                while (i < total) {
+                  const l = lines[i];
+                  const om = matchOpt(l);
+                  if (!om) break;
+                  const stripped = l.replace(/^[-\u2013\u2014\u2022]\s*/, "");
+                  const isNum = /^[1-5]$/.test(stripped[0]);
+                  const isLetter = /^[A-Ea-e]/.test(stripped) && !isNum;
+                  if (optStyle === null)
+                    optStyle = isLetter ? "letter" : "number";
+                  if (optStyle === "letter" && isNum) break;
+                  let ot = om.text;
+                  const k = om.key;
+                  i++;
+                  while (i < total) {
+                    const nl = lines[i];
+                    if (
+                      matchOpt(nl) ||
+                      parseQStart(nl) ||
+                      isAnsLine(nl) ||
+                      splitInline(nl) ||
+                      looksLikeBareQ(nl, lines[i + 1])
+                    )
+                      break;
+                    if (nl.trim()) ot += " " + nl.trim();
+                    i++;
+                  }
+                  opts[k] = ot.trim();
+                }
+              }
+              if (Object.keys(opts).length === 0 && !bareQ) {
+                const stemFill =
+                  /(\.{2,}|\u2026|[?:]|_{2,})\s*$/.test(qText) ||
+                  qText.length >= 10;
+                const isBareOpt = (l) => {
+                  if (!l) return false;
+                  if (
+                    parseQStart(l) ||
+                    matchOpt(l) ||
+                    isAnsLine(l) ||
+                    matchFibAns(l) ||
+                    splitInline(l)
+                  )
+                    return false;
+                  const c = stripMd(l);
+                  return (
+                    c &&
+                    c.length <= 40 &&
+                    !/[.?!]$/.test(c) &&
+                    c.split(/\s+/).length <= 5
+                  );
+                };
+                if (stemFill) {
+                  const collected = [];
+                  let j = i;
+                  while (
+                    j < total &&
+                    isBareOpt(lines[j]) &&
+                    collected.length < 6
+                  ) {
+                    collected.push(stripMd(lines[j]));
+                    j++;
+                  }
+                  if (collected.length >= 3 && collected.length <= 5) {
+                    collected.forEach((t, n) => {
+                      opts["ABCDE"[n]] = t;
+                    });
+                    i = j;
+                  }
+                }
+              }
+            }
+            for (const k of Object.keys(opts)) {
+              const ex = extractTrailingAns(opts[k]);
+              opts[k] = ex.text;
+              if (ex.ans && gluedAns === null) gluedAns = ex.ans;
+            }
+            {
+              const exq = extractTrailingAns(qText);
+              if (exq.ans) {
+                gluedAns = gluedAns || exq.ans;
+                qText = exq.text;
+              } else qText = stripMd(qText);
+            }
+            let ans = gluedAns,
+              look = 0;
+            if (!ans) {
+              while (i + look < total && look < 6) {
+                const l = lines[i + look];
+                const a = matchAns(l);
+                if (a) {
+                  ans = a;
+                  i += look + 1;
+                  break;
+                }
+                if (
+                  look > 0 &&
+                  (parseQStart(l) || looksLikeBareQ(l, lines[i + look + 1]))
+                )
+                  break;
+                look++;
+              }
+            }
+            if (Object.keys(opts).length === 0) {
+              let fibAns = null,
+                fl = 0;
+              while (i + fl < total && fl < 4) {
+                const fa = matchFibAns(lines[i + fl]);
+                if (fa) {
+                  fibAns = fa.text;
+                  i += fl + 1;
+                  break;
+                }
+                if (parseQStart(lines[i + fl])) break;
+                fl++;
+              }
+              if (fibAns === null) {
+                const inStem = qText.match(/\bAnswer\s*:\s*(.*)$/i);
+                if (inStem) {
+                  fibAns = stripMd(inStem[1].trim());
+                  qText = stripMd(qText.replace(/\bAnswer\s*:.*$/i, "").trim());
+                }
+              }
+              if (fibAns !== null && qText) {
+                qs.push({
+                  num: qctr,
+                  label: start.id,
+                  type: "fib",
+                  q: qText,
+                  opts: {},
+                  ans: fibAns,
+                  hasKey: fibAns.length > 0,
+                });
+                continue;
+              }
+              continue;
+            }
+            if (!ans) {
+              const a = matchAns(qText + " " + Object.values(opts).join(" "));
+              if (a) ans = a;
+            }
+            if (Object.keys(opts).length >= 2) {
+              const validAns = ans && opts[ans] !== undefined;
+              qs.push({
+                num: qctr,
+                label: start.id,
+                type: "mcq",
+                q: qText,
+                opts,
+                ans: validAns ? ans : null,
+                hasKey: !!validAns,
+              });
+            }
+          }
+          const seen = new Set();
+          const dedup = [];
+          for (const q of qs) {
+            const sig =
+              q.type === "fib"
+                ? "f|" +
+                  q.q
+                    .toLowerCase()
+                    .replace(/[^a-z0-9 ]/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                : "m|" +
+                  q.q
+                    .toLowerCase()
+                    .replace(/[^a-z0-9 ]/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim() +
+                  "|" +
+                  Object.values(q.opts)
+                    .map((o) => o.toLowerCase().replace(/[^a-z0-9]/g, ""))
+                    .join("|");
+            if (seen.has(sig)) continue;
+            seen.add(sig);
+            dedup.push(q);
+          }
+          dedup.forEach((q, n) => (q.num = n + 1));
+          return dedup;
+        }
+
+        // ── Helpers ──────────────────────────────────────────────────────────────────
+        function highlightTerms(text) {
+          let t = text;
+          const sorted = [...KEY_TERMS].sort((a, b) => b.length - a.length);
+          for (const term of sorted) {
+            const re = new RegExp(
+              "(" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")",
+              "gi",
+            );
+            t = t.replace(re, '<span class="kterm">$1</span>');
+          }
+          return t;
+        }
+
+        function guessCategory(q) {
+          const t = (
+            q.q +
+            " " +
+            Object.values(q.opts || {}).join(" ")
+          ).toLowerCase();
+          if (/paris|kyoto|agreement|protocol|cop\d/i.test(t))
+            return "International Agreements";
+          if (
+            /tax|credit|offset|cap.and.trade|carbon pric|carbon budget/i.test(t)
+          )
+            return "Carbon Policy & Economics";
+          if (
+            /solar|wind|hydro|nuclear|biomass|geotherm|renewable|tidal/i.test(t)
+          )
+            return "Renewable Energy";
+          if (
+            /sequestration|capture|storage|ccs|sink|afforest|reforest/i.test(t)
+          )
+            return "Carbon Sequestration";
+          if (/footprint|neutrality|net.zero|offsetting/i.test(t))
+            return "Carbon Concepts";
+          if (
+            /methane|co2|cfc|nitrous|ozone|water vapor|greenhouse gas/i.test(t)
+          )
+            return "Greenhouse Gases";
+          if (/deforest|forest|tree|soil|agriculture|livestock|cattle/i.test(t))
+            return "Land & Agriculture";
+          if (/ocean|sea|acidif|phytoplankton/i.test(t))
+            return "Oceans & Climate";
+          if (/transport|car|aviation|ship/i.test(t)) return "Transportation";
+          if (/industry|cement|manufactur|steel|aluminum/i.test(t))
+            return "Industry & Production";
+          if (/global warm|temperature|climate change|feedback/i.test(t))
+            return "Climate Change Impacts";
+          if (/photosynthesis|respiration|carbon cycle|decomposition/i.test(t))
+            return "Carbon Cycle";
+          return "General";
+        }
+
+        // ── Render ───────────────────────────────────────────────────────────────────
+        function getVisible() {
+          const search = $("searchIn").value.toLowerCase();
+          let list = order.map((i) => ({ ...allQ[i], idx: i }));
+          if (search)
+            list = list.filter(
+              (q) =>
+                q.q.toLowerCase().includes(search) ||
+                Object.values(q.opts || {}).some((o) =>
+                  o.toLowerCase().includes(search),
+                ) ||
+                (q.type === "fib" &&
+                  (q.ans || "").toLowerCase().includes(search)),
+            );
+          if (filterKey === "unseen") list = list.filter((q) => !state[q.idx]);
+          if (filterKey === "wrong")
+            list = list.filter((q) => state[q.idx] === "wrong");
+          if (filterKey === "right")
+            list = list.filter((q) => state[q.idx] === "right");
+          if (filterKey === "bookmarked")
+            list = list.filter((q) => state["bm_" + q.idx]);
+          if (filterKey === "retake")
+            list = list.filter((q) => retakeList.includes(q.idx));
+          return list;
+        }
+
+        function render() {
+          if (mode === "read") {
+            renderRead();
+            return;
+          }
+          const list = getVisible();
+          const el = $("qList");
+          if (!list.length) {
+            el.innerHTML =
+              '<div class="empty"><i class="ti ti-mood-empty"></i>No questions match.</div>';
+            return;
+          }
+          el.innerHTML = "";
+          // Quiz mode first-use hint
+          const anyAnswered = Object.keys(state).some(
+            (k) => !isNaN(k) && k !== "",
+          );
+          if (mode === "quiz" && !anyAnswered && list.length > 0) {
+            const hint = document.createElement("div");
+            hint.className = "quiz-hint";
+            hint.id = "quizHintBanner";
+            hint.innerHTML =
+              '<i class="ti ti-info-circle"></i><span>Click a question to expand it, then select an answer.</span><button onclick="this.closest(\'.quiz-hint\').remove()" title="Dismiss"><i class="ti ti-x"></i></button>';
+            el.appendChild(hint);
+          }
+          list.forEach((q) => {
+            const s = state[q.idx],
+              bm = state["bm_" + q.idx],
+              note = state["note_" + q.idx] || "";
+            const card = document.createElement("div");
+            card.className =
+              "qcard" +
+              (bm ? " bm" : "") +
+              (s === "right"
+                ? " ok"
+                : s === "wrong"
+                  ? " bad"
+                  : s === "unknown"
+                    ? " unk"
+                    : "");
+            card.id = "qcard-" + q.idx;
+            const nc =
+              "qnum" +
+              (s === "right"
+                ? " ok"
+                : s === "wrong"
+                  ? " bad"
+                  : s === "unknown"
+                    ? " unk"
+                    : "");
+            const known = q.hasKey;
+            const isFib = q.type === "fib";
+            let optsHtml;
+            if (isFib) {
+              if (mode === "browse") {
+                optsHtml = `<div class="fib-answer${known ? "" : " blank"}"><span class="fib-lbl">Answer</span>${known ? escHtml(q.ans) : "— not provided in source —"}</div>`;
+              } else if (s) {
+                const chosen = state["chosen_" + q.idx] || "";
+                const bgCls = !known
+                  ? " blank"
+                  : s === "right"
+                    ? ""
+                    : " wrongbg";
+                const lbl = known
+                  ? s === "right"
+                    ? "Correct"
+                    : "Expected answer"
+                  : "No answer key in source";
+                optsHtml = `<div class="fib-answer${bgCls}"><span class="fib-lbl">${lbl}</span>${known ? escHtml(q.ans) : "— self-check —"}${chosen ? `<div class="fib-your">You typed: "${escHtml(chosen)}"</div>` : ""}</div>`;
+              } else {
+                optsHtml = `<div class="fib-input-row"><input type="text" class="fib-input" id="fibin-${q.idx}" placeholder="${known ? "Type your answer…" : "No answer key — type to self-check"}"><button class="fib-check" data-qi="${q.idx}">Check</button></div>`;
+              }
+            } else {
+              optsHtml = getOptOrder(q.idx)
+                .map((k) => {
+                  const v = q.opts[k];
+                  let cls = "opt";
+                  if (mode === "quiz" && s) {
+                    if (known && k === q.ans) cls = "opt rev";
+                    else if (state["chosen_" + q.idx] === k)
+                      cls = known ? "opt wrng" : "opt chosen";
+                  }
+                  return `<div class="${cls}" data-k="${k}" data-qi="${q.idx}"><span class="okey">${k}.</span><span>${v}</span></div>`;
+                })
+                .join("");
+            }
+            const ansDisplay = isFib
+              ? escHtml(q.ans || "")
+              : known
+                ? q.ans + ". " + (q.opts[q.ans] || "")
+                : "not in source";
+            const fBrowse = isFib
+              ? ""
+              : `<button class="rbtn" onclick="toggleAns(this,${q.idx})"><i class="ti ti-eye" style="font-size:13px"></i> Show answer</button><span class="anstxt${s ? " show" : ""}" id="ans-${q.idx}">${known ? "✓ " + ansDisplay : "⚠ Answer not in source"}</span>`;
+            let fQuiz = "";
+            if (s === "right")
+              fQuiz = `<span style="font-size:12px;color:var(--txs)">✓ Correct</span>`;
+            else if (s === "wrong")
+              fQuiz = `<span style="font-size:12px;color:var(--txd)">✗ Wrong${isFib || !known ? "" : " — correct: " + q.ans}</span>`;
+            else if (s === "unknown")
+              fQuiz = `<span style="font-size:12px;color:var(--txw)">⚠ Recorded — no answer key in this PDF</span>`;
+            const noteHtml =
+              mode === "notes"
+                ? `<textarea class="notearea" placeholder="Add a note…" oninput="saveNote(${q.idx},this.value)">${note}</textarea><div class="nsaved" id="ns-${q.idx}">${note ? "Saved" : ""}</div>`
+                : "";
+            const copyQBtn = `<button onclick="copyQuestion(${q.idx})"><i class="ti ti-copy" style="font-size:13px"></i></button>`;
+            const aiBtn =
+              (mode === "quiz" && s) || mode === "browse"
+                ? `<button onclick="askAI(${q.idx},this)" style="margin-left:auto"><i class="ti ti-sparkles" style="font-size:13px"></i> Explain</button>`
+                : "";
+            card.innerHTML = `
+      <div class="qhdr" tabindex="0" role="button" aria-expanded="false">
+        <span class="${nc}">${q.num}</span>
+        <span class="qtitle">${q.q}</span>
+        <div class="qicons">
+          ${bm ? '<i class="ti ti-bookmark ibtn bmon"></i>' : ""}
+          ${s === "right" ? '<i class="ti ti-check" style="color:var(--txs);font-size:15px"></i>' : s === "wrong" ? '<i class="ti ti-x" style="color:var(--txd);font-size:15px"></i>' : s === "unknown" ? '<i class="ti ti-help-circle" style="color:var(--txw);font-size:15px"></i>' : ""}
+          <i class="ti ti-chevron-right ibtn chev" style="transition:transform .2s"></i>
+        </div>
+      </div>
+      <div class="qbody" id="qb-${q.idx}">
+        ${optsHtml}
+        <div class="qfoot">
+          ${copyQBtn}
+          ${mode === "browse" ? fBrowse : fQuiz}
+          <button onclick="toggleBm(${q.idx})"><i class="ti ti-bookmark" style="font-size:13px"></i> ${bm ? "Saved" : "Save"}</button>
+          ${aiBtn}
+        </div>
+        <div id="ai-${q.idx}"></div>
+        ${noteHtml}
+      </div>`;
+            wireCard(card, q.idx);
+            el.appendChild(card);
+          });
+          updateProgress();
+          // Auto-open first card in quiz mode if nothing answered yet
+          if (mode === "quiz" && !anyAnswered && list.length > 0) {
+            const firstCard = el.querySelector(".qcard");
+            if (firstCard) {
+              const body = firstCard.querySelector(".qbody");
+              const chev = firstCard.querySelector(".chev");
+              const hdr = firstCard.querySelector(".qhdr");
+              if (body && chev) {
+                body.classList.add("open");
+                chev.style.transform = "rotate(90deg)";
+                if (hdr) hdr.setAttribute("aria-expanded", "true");
+              }
+            }
+          }
+        }
+
+        // ── Read Mode ────────────────────────────────────────────────────────────────
+        function renderRead() {
+          const list = getVisible();
+          const el = $("qList");
+          if (!list.length) {
+            el.innerHTML =
+              '<div class="empty"><i class="ti ti-mood-empty"></i>No questions match.</div>';
+            return;
+          }
+          el.innerHTML = "";
+
+          // Group by category
+          const groups = {};
+          list.forEach((q) => {
+            const cat = guessCategory(q);
+            if (!groups[cat]) groups[cat] = [];
+            groups[cat].push(q);
+          });
+
+          for (const [cat, qs] of Object.entries(groups)) {
+            const hdr = document.createElement("div");
+            hdr.className = "cat-header";
+            hdr.textContent = cat + " (" + qs.length + ")";
+            el.appendChild(hdr);
+
+            qs.forEach((q) => {
+              const card = document.createElement("div");
+              card.className = "study-card";
+              const isFib = q.type === "fib";
+              const known = q.hasKey;
+              const optsHtml = isFib
+                ? ""
+                : Object.entries(q.opts)
+                    .map(([k, v]) => {
+                      const isCorrect = known && k === q.ans;
+                      return `<div class="sc-opt ${isCorrect ? "correct" : "other"}"><span class="sc-opt-key">${k}.</span><span>${highlightTerms(v)}</span>${isCorrect ? ' <i class="ti ti-check" style="font-size:11px;margin-left:4px"></i>' : ""}</div>`;
+                    })
+                    .join("");
+              const ansLine = isFib
+                ? known
+                  ? "✓ Answer: " + escHtml(q.ans)
+                  : "⚠ No answer provided in source"
+                : known
+                  ? "✓ Answer: " + q.ans + ". " + (q.opts[q.ans] || "")
+                  : "⚠ No answer key in this PDF";
+              const copyQBtn = `<button onclick="copyQuestion(${q.idx})" style="margin-left:10px;font-size:11px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);cursor:pointer;font-family:var(--font)"><i class="ti ti-copy" style="font-size:11px"></i></button>`;
+
+              card.innerHTML = `
+        <span class="sc-cat">${cat}${isFib ? " · fill-in" : ""}</span>
+        <div class="sc-q">${highlightTerms(q.q)}</div>
+        ${optsHtml ? `<div class="sc-opts">${optsHtml}</div>` : ""}
+        <div class="sc-ans">${ansLine}${copyQBtn}
+          <button onclick="askAI(${q.idx},this)" style="margin-left:10px;font-size:11px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--bdi);background:var(--bgi);color:var(--txi);cursor:pointer;font-family:var(--font)"><i class="ti ti-sparkles" style="font-size:11px"></i> Why?</button>
+        </div>
+        <div id="ai-${q.idx}"></div>`;
+              el.appendChild(card);
+            });
+          }
+        }
+
+        // ── Wire card interactions ───────────────────────────────────────────────────
+        function wireCard(card, qi) {
+          const hdr = card.querySelector(".qhdr");
+          const body = card.querySelector("#qb-" + qi);
+          const chev = card.querySelector(".chev");
+          const tog = () => {
+            const o = body.classList.toggle("open");
+            chev.style.transform = o ? "rotate(90deg)" : "";
+            hdr.setAttribute("aria-expanded", o);
+          };
+          hdr.addEventListener("click", tog);
+          hdr.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") tog();
+          });
+          if (mode === "quiz" && !state[qi]) {
+            card.querySelectorAll(".opt").forEach((opt) => {
+              opt.addEventListener("click", () => {
+                const chosen = opt.dataset.k,
+                  qi2 = parseInt(opt.dataset.qi);
+                state["chosen_" + qi2] = chosen;
+                const _q2 = allQ[qi2];
+                state[qi2] = _q2.hasKey
+                  ? chosen === _q2.ans
+                    ? "right"
+                    : "wrong"
+                  : "unknown";
+                updateMetrics();
+                updateProgress();
+                rebuildCard(qi2);
+              });
+            });
+            // Fill-in-the-blank: Check button + Enter key
+            const fibBtn = card.querySelector(".fib-check");
+            const fibInp = card.querySelector(".fib-input");
+            if (fibBtn && fibInp) {
+              const submit = () => {
+                const val = fibInp.value.trim();
+                if (!val) return;
+                const q = allQ[qi];
+                const hasAns = q.ans && q.ans.trim().length;
+                state["chosen_" + qi] = val;
+                if (q.hasKey) {
+                  const a = normFib(q.ans),
+                    v = normFib(val);
+                  state[qi] =
+                    a === v ||
+                    (a.length > 3 && (a.includes(v) || v.includes(a)))
+                      ? "right"
+                      : "wrong";
+                } else {
+                  state[qi] = "unknown";
+                }
+                updateMetrics();
+                updateProgress();
+                rebuildCard(qi);
+              };
+              fibBtn.addEventListener("click", submit);
+              fibInp.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") submit();
+              });
+            }
+          }
+        }
+
+        function rebuildCard(qi) {
+          const el = document.getElementById("qcard-" + qi);
+          if (!el) return;
+          const wasOpen = !!el.querySelector(".qbody.open");
+          const s = state[qi],
+            bm = state["bm_" + qi],
+            note = state["note_" + qi] || "";
+          const q = { ...allQ[qi], idx: qi };
+          const nc =
+            "qnum" +
+            (s === "right"
+              ? " ok"
+              : s === "wrong"
+                ? " bad"
+                : s === "unknown"
+                  ? " unk"
+                  : "");
+          const newCard = document.createElement("div");
+          const known = q.hasKey;
+          newCard.className =
+            "qcard" +
+            (bm ? " bm" : "") +
+            (s === "right"
+              ? " ok"
+              : s === "wrong"
+                ? " bad"
+                : s === "unknown"
+                  ? " unk"
+                  : "");
+          newCard.id = "qcard-" + qi;
+          const isFib = q.type === "fib";
+          let optsHtml;
+          if (isFib) {
+            if (mode === "browse") {
+              optsHtml = `<div class="fib-answer${known ? "" : " blank"}"><span class="fib-lbl">Answer</span>${known ? escHtml(q.ans) : "— not provided in source —"}</div>`;
+            } else if (s) {
+              const chosen = state["chosen_" + qi] || "";
+              const bgCls = !known ? " blank" : s === "right" ? "" : " wrongbg";
+              const lbl = known
+                ? s === "right"
+                  ? "Correct"
+                  : "Expected answer"
+                : "No answer key in source";
+              optsHtml = `<div class="fib-answer${bgCls}"><span class="fib-lbl">${lbl}</span>${known ? escHtml(q.ans) : "— self-check —"}${chosen ? `<div class="fib-your">You typed: "${escHtml(chosen)}"</div>` : ""}</div>`;
+            } else {
+              optsHtml = `<div class="fib-input-row"><input type="text" class="fib-input" id="fibin-${qi}" placeholder="${known ? "Type your answer…" : "No answer key — type to self-check"}"><button class="fib-check" data-qi="${qi}">Check</button></div>`;
+            }
+          } else {
+            optsHtml = getOptOrder(qi)
+              .map((k) => {
+                const v = q.opts[k];
+                let cls = "opt";
+                if (mode === "quiz" && s) {
+                  if (known && k === q.ans) cls = "opt rev";
+                  else if (state["chosen_" + qi] === k)
+                    cls = known ? "opt wrng" : "opt chosen";
+                }
+                return `<div class="${cls}" data-k="${k}" data-qi="${qi}"><span class="okey">${k}.</span><span>${v}</span></div>`;
+              })
+              .join("");
+          }
+          const ansDisplay = isFib
+            ? escHtml(q.ans || "")
+            : known
+              ? q.ans + ". " + (q.opts[q.ans] || "")
+              : "not in source";
+          const fBrowse = isFib
+            ? ""
+            : `<button class="rbtn" onclick="toggleAns(this,${qi})"><i class="ti ti-eye" style="font-size:13px"></i> Show answer</button><span class="anstxt${s ? " show" : ""}" id="ans-${qi}">${known ? "✓ " + ansDisplay : "⚠ Answer not in source"}</span>`;
+          let fQuiz = "";
+          if (s === "right")
+            fQuiz = `<span style="font-size:12px;color:var(--txs)">✓ Correct</span>`;
+          else if (s === "wrong")
+            fQuiz = `<span style="font-size:12px;color:var(--txd)">✗ Wrong${isFib || !known ? "" : " — correct: " + q.ans}</span>`;
+          else if (s === "unknown")
+            fQuiz = `<span style="font-size:12px;color:var(--txw)">⚠ Recorded — no answer key in this PDF</span>`;
+          const noteHtml =
+            mode === "notes"
+              ? `<textarea class="notearea" placeholder="Add a note…" oninput="saveNote(${qi},this.value)">${note}</textarea><div class="nsaved" id="ns-${qi}">${note ? "Saved" : ""}</div>`
+              : "";
+          const copyQBtn = `<button onclick="copyQuestion(${qi})"><i class="ti ti-copy" style="font-size:13px"></i></button>`;
+
+          const aiBtn =
+            (mode === "quiz" && s) || mode === "browse"
+              ? `<button onclick="askAI(${qi},this)" style="margin-left:auto"><i class="ti ti-sparkles" style="font-size:13px"></i> Explain</button>`
+              : "";
+          newCard.innerHTML = `
+    <div class="qhdr" tabindex="0" role="button" aria-expanded="${wasOpen}">
+      <span class="${nc}">${q.num}</span>
+      <span class="qtitle">${q.q}</span>
+      <div class="qicons">
+        ${bm ? '<i class="ti ti-bookmark ibtn bmon"></i>' : ""}
+        ${s === "right" ? '<i class="ti ti-check" style="color:var(--txs);font-size:15px"></i>' : s === "wrong" ? '<i class="ti ti-x" style="color:var(--txd);font-size:15px"></i>' : s === "unknown" ? '<i class="ti ti-help-circle" style="color:var(--txw);font-size:15px"></i>' : ""}
+        <i class="ti ti-chevron-right ibtn chev" style="transition:transform .2s${wasOpen ? ";transform:rotate(90deg)" : ""}"></i>
+      </div>
+    </div>
+    <div class="qbody${wasOpen ? " open" : ""}" id="qb-${qi}">
+      ${optsHtml}
+      <div class="qfoot">
+        ${copyQBtn}
+        ${mode === "browse" ? fBrowse : fQuiz}
+        <button onclick="toggleBm(${qi})"><i class="ti ti-bookmark" style="font-size:13px"></i> ${bm ? "Saved" : "Save"}</button>
+        ${aiBtn}
+      </div>
+      <div id="ai-${qi}"></div>
+      ${noteHtml}
+    </div>`;
+          wireCard(newCard, qi);
+          el.replaceWith(newCard);
+        }
+
+        // ── AI Explain ───────────────────────────────────────────────────────────────
+        window.askAI = async function (qi, btn) {
+          const q = allQ[qi];
+          const box = document.getElementById("ai-" + qi);
+          if (!box) return;
+          if (box.dataset.loaded === "1") {
+            box.style.display = box.style.display === "none" ? "block" : "none";
+            return;
+          }
+          btn.disabled = true;
+          btn.innerHTML =
+            '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Thinking...';
+          box.className = "ai-box loading";
+          box.textContent = "Asking AI...";
+          box.style.display = "block";
+          let prompt;
+          if (q.type === "fib") {
+            prompt =
+              "Question (fill in the blank): " +
+              q.q +
+              "\n\nCorrect answer: " +
+              (q.ans || "(not given)") +
+              "\n\nExplain in 3-4 sentences why this is the correct answer and give the key concept behind it. Be clear and educational.";
+          } else {
+            const optStr = Object.entries(q.opts)
+              .map(([k, v]) => k + ". " + v)
+              .join("\n");
+            if (q.hasKey) {
+              prompt =
+                "Question: " +
+                q.q +
+                "\n\nOptions:\n" +
+                optStr +
+                "\n\nCorrect answer: " +
+                q.ans +
+                ". " +
+                (q.opts[q.ans] || "") +
+                "\n\nExplain in 3-4 sentences why option " +
+                q.ans +
+                " is correct and briefly why the other options are wrong. Be clear and educational.";
+            } else {
+              prompt =
+                "Question: " +
+                q.q +
+                "\n\nOptions:\n" +
+                optStr +
+                "\n\nThe source did not specify which option is correct. Determine the most likely correct answer, state it, and explain in 3-4 sentences why. Be clear and educational.";
+            }
+          }
+          try {
+            let text = "";
+            if (aiProvider === "gemini") {
+              if (!geminiKey) {
+                box.className = "ai-box err";
+                box.innerHTML =
+                  'No Gemini key set. <button onclick="openSettings()" style="font-size:12px;padding:2px 8px;border-radius:4px;border:0.5px solid var(--bdi);background:var(--bgi);color:var(--txi);cursor:pointer;font-family:var(--font)">Open Settings</button>';
+                btn.disabled = false;
+                btn.innerHTML =
+                  '<i class="ti ti-sparkles" style="font-size:13px"></i> Explain';
+                return;
+              }
+              const res = await fetch(
+                "https://generativelanguage.googleapis.com/v1beta/models/" +
+                  geminiModel +
+                  ":generateContent?key=" +
+                  geminiKey,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                  }),
+                },
+              );
+              if (!res.ok) {
+                const e = await res.json().catch(() => ({}));
+                throw new Error(
+                  (e.error && e.error.message) || "HTTP " + res.status,
+                );
+              }
+              const data = await res.json();
+              text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+            } else {
+              // Check for missing/placeholder key before hitting the network
+              const _key = openRouterKey;
+              const _noKey = !_key || !_key.trim();
+              if (_noKey) {
+                box.className = "ai-box err";
+                box.innerHTML =
+                  "<b>AI key not set.</b><br>To use AI explanations, open Settings and paste a free OpenRouter key.<br><br>" +
+                  '<button onclick="openSettings()" style="font-size:12px;padding:4px 12px;border-radius:6px;border:0.5px solid var(--bdi);background:var(--bgi);color:var(--txi);cursor:pointer;font-family:var(--font)">Open Settings</button>' +
+                  '<br><span style="font-size:11px;color:var(--tx3);margin-top:6px;display:block">Get a free key at openrouter.ai → Keys</span>';
+                btn.disabled = false;
+                btn.innerHTML =
+                  '<i class="ti ti-sparkles" style="font-size:13px"></i> Explain';
+                return;
+              }
+              const res = await fetch(
+                "https://openrouter.ai/api/v1/chat/completions",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + _key,
+                    "HTTP-Referer": "pdf-study-guide",
+                    "X-Title": "PDF Study Guide",
+                  },
+                  body: JSON.stringify({
+                    model: "openrouter/auto",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 400,
+                  }),
+                },
+              );
+              if (!res.ok) {
+                const e = await res.json().catch(() => ({}));
+                const msg =
+                  (e.error && e.error.message) || "HTTP " + res.status;
+                if (res.status === 401 || /auth|key|token/i.test(msg)) {
+                  throw new Error(
+                    "Invalid API key. Open Settings and paste a valid OpenRouter key (openrouter.ai → Keys).",
+                  );
+                }
+                throw new Error(msg);
+              }
+              const data = await res.json();
+              text = data.choices?.[0]?.message?.content || "";
+            }
+            box.className = "ai-box";
+            box.textContent = text.trim() || "No explanation available.";
+            box.dataset.loaded = "1";
+          } catch (e) {
+            box.className = "ai-box err";
+            box.innerHTML =
+              "Error: " +
+              (e.message || "Unknown error") +
+              '<br><button onclick="openSettings()" style="margin-top:6px;font-size:11px;padding:3px 10px;border-radius:5px;border:0.5px solid var(--bdi);background:var(--bgi);color:var(--txi);cursor:pointer;font-family:var(--font)">Open Settings</button>';
+          }
+          btn.disabled = false;
+          btn.innerHTML =
+            '<i class="ti ti-sparkles" style="font-size:13px"></i> Explain';
+        };
+
+        // CSS spin animation
+        const styleEl = document.createElement("style");
+        styleEl.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
+        document.head.appendChild(styleEl);
+
+        // ── Exam Duration Modal ──────────────────────────────────────────────────────
+        let selectedDurMins = 30;
+
+        window.openExamModal = function () {
+          if (!allQ.length) {
+            toast("Upload a PDF first.");
+            return;
+          }
+          selectedDurMins = 30;
+          $("customMins").value = "";
+          document
+            .querySelectorAll(".dur-btn")
+            .forEach((b) =>
+              b.classList.toggle("sel", parseInt(b.dataset.mins) === 30),
+            );
+          $("examDurModal").classList.add("active");
+        };
+
+        window.closeExamModal = function () {
+          $("examDurModal").classList.remove("active");
+        };
+
+        window.selectDur = function (btn) {
+          selectedDurMins = parseInt(btn.dataset.mins);
+          $("customMins").value = "";
+          document
+            .querySelectorAll(".dur-btn")
+            .forEach((b) => b.classList.remove("sel"));
+          btn.classList.add("sel");
+        };
+
+        $("customMins").addEventListener("input", function () {
+          if (this.value) {
+            selectedDurMins = parseInt(this.value) || 30;
+            document
+              .querySelectorAll(".dur-btn")
+              .forEach((b) => b.classList.remove("sel"));
+          }
+        });
+
+        window.confirmStartExam = function () {
+          const custom = parseInt($("customMins").value);
+          const mins = custom > 0 ? custom : selectedDurMins;
+          if (isNaN(mins) || mins < 1) {
+            toast("Enter a valid duration.");
+            return;
+          }
+          // Exams are multiple-choice only (fill-in questions aren't clickable).
+          const mcqIdx = order.filter((i) => allQ[i].type !== "fib");
+          if (!mcqIdx.length) {
+            toast(
+              "Exam mode needs multiple-choice questions; this set is fill-in only. Use Quiz mode instead.",
+            );
+            return;
+          }
+          closeExamModal();
+          examQ = [...mcqIdx].sort(() => Math.random() - 0.5);
+          examAnswers = {};
+          examRevealed = false;
+          examSecondsLeft = mins * 60;
+          renderExam();
+          $("examOverlay").classList.add("active");
+          $("examTitle").textContent = "Exam – " + examQ.length + " Questions";
+          $("examSubmitBtn").textContent = "Submit Exam";
+          $("examSubmitBtn").onclick = submitExam;
+          startExamTimer();
+        };
+
+        // ── Custom Confirm Modal ─────────────────────────────────────────────────────
+        let confirmResolve = null;
+
+        function showConfirm(msg, okLabel = "Confirm") {
+          return new Promise((resolve) => {
+            confirmResolve = resolve;
+            $("confirmMsg").textContent = msg;
+            $("confirmOkBtn").textContent = okLabel;
+            $("confirmModal").classList.add("active");
+          });
+        }
+
+        window.resolveConfirm = function (val) {
+          $("confirmModal").classList.remove("active");
+          if (confirmResolve) {
+            confirmResolve(val);
+            confirmResolve = null;
+          }
+        };
+
+        window.safeResetAll = async function () {
+          const ok = await showConfirm(
+            "Reset all quiz progress, scores and notes?",
+            "Reset",
+          );
+          if (!ok) return;
+          state = {};
+          order = allQ.map((_, i) => i);
+          retakeList = [];
+          ansOrders = {};
+          updateMetrics();
+          updateProgress();
+          render();
+          toast("Progress reset");
+        };
+
+        // ── Exam Mode ────────────────────────────────────────────────────────────────
+        function renderExam() {
+          const body = $("examBody");
+          body.innerHTML = "";
+          examQ.forEach((qi, n) => {
+            const q = allQ[qi];
+            const div = document.createElement("div");
+            div.className = "exam-q";
+            div.id = "eq-" + qi;
+            const optsHtml = Object.entries(q.opts)
+              .map(([k, v]) => {
+                let cls = "exam-opt";
+                if (examRevealed) {
+                  if (k === q.ans) cls += " correct";
+                  else if (examAnswers[qi] === k) cls += " wrong";
+                } else if (examAnswers[qi] === k) cls += " sel";
+                return `<div class="${cls}" data-k="${k}" data-qi="${qi}">${k}. ${v}</div>`;
+              })
+              .join("");
+            div.innerHTML = `<div class="exam-qtext"><strong>Q${n + 1}.</strong> ${q.q}</div>${optsHtml}`;
+            if (!examRevealed) {
+              div.querySelectorAll(".exam-opt").forEach((opt) => {
+                opt.addEventListener("click", () => {
+                  examAnswers[qi] = opt.dataset.k;
+                  renderExam();
+                  const answered = Object.keys(examAnswers).length;
+                  $("examFootProg").textContent =
+                    answered + " of " + examQ.length + " answered";
+                  $("examQProg").textContent = answered + "/" + examQ.length;
+                });
+              });
+            }
+            body.appendChild(div);
+          });
+          const answered = Object.keys(examAnswers).length;
+          $("examFootProg").textContent =
+            answered + " of " + examQ.length + " answered";
+          $("examQProg").textContent = answered + "/" + examQ.length;
+        }
+
+        function startExamTimer() {
+          clearInterval(examTimerInt);
+          updateExamTimer();
+          examTimerInt = setInterval(() => {
+            examSecondsLeft--;
+            updateExamTimer();
+            if (examSecondsLeft <= 0) {
+              clearInterval(examTimerInt);
+              submitExam();
+            }
+          }, 1000);
+        }
+
+        function updateExamTimer() {
+          const m = Math.floor(examSecondsLeft / 60),
+            s = examSecondsLeft % 60;
+          const el = $("examTimer");
+          el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+          el.className = "exam-timer" + (examSecondsLeft <= 120 ? " warn" : "");
+        }
+
+        window.submitExam = function () {
+          clearInterval(examTimerInt);
+          examRevealed = true;
+          renderExam();
+          // Calculate score
+          let correct = 0;
+          examQ.forEach((qi) => {
+            if (examAnswers[qi] === allQ[qi].ans) correct++;
+          });
+          const total = examQ.length;
+          const pct = Math.round((correct / total) * 100);
+          const pass = pct >= 50;
+          // Save to history
+          const attempt = {
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            correct,
+            total,
+            pct,
+            pass,
+            pdf: currentPdfName,
+          };
+          history.unshift(attempt);
+          if (history.length > 20) history = history.slice(0, 20);
+          localStorage.setItem("sg_history", JSON.stringify(history));
+          // Update retake list
+          retakeList = examQ.filter((qi) => examAnswers[qi] !== allQ[qi].ans);
+          // Show score modal
+          setTimeout(() => {
+            $("modTitle").textContent = "Exam Complete!";
+            $("modScore").textContent = pct + "%";
+            $("modScore").className = "score-big " + (pass ? "pass" : "fail");
+            $("modSub").textContent =
+              correct +
+              " of " +
+              total +
+              " correct · " +
+              (pass ? "Passed ✓" : "Needs improvement, óùn sùn. wake up!!!");
+            $("scoreMod").classList.add("active");
+          }, 400);
+          $("examSubmitBtn").textContent = "Close Results";
+          $("examSubmitBtn").onclick = () =>
+            $("examOverlay").classList.remove("active");
+        };
+
+        window.cancelExam = async function () {
+          const ok = await showConfirm(
+            "Cancel exam? Your progress will be lost.",
+          );
+          if (!ok) return;
+          clearInterval(examTimerInt);
+          $("examOverlay").classList.remove("active");
+        };
+
+        window.closeModal = function () {
+          $("scoreMod").classList.remove("active");
+        };
+
+        window.retakeWrong = function () {
+          if (!retakeList.length) {
+            // fallback: build retakeList from quiz state wrong answers
+            retakeList = allQ
+              .map((_, i) => i)
+              .filter((i) => state[i] === "wrong");
+          }
+          if (!retakeList.length) {
+            toast("No wrong answers to retake!");
+            return;
+          }
+          // Clear state only for retake questions so they are unanswered again
+          retakeList.forEach((qi) => {
+            delete state[qi];
+            delete state["chosen_" + qi];
+            delete ansOrders[qi]; // regenerate shuffle order
+          });
+          // Switch to quiz mode and retake filter
+          mode = "quiz";
+          ["mBrowse", "mQuiz", "mRead", "mNotes"].forEach((id) => {
+            const el = $(id);
+            if (el) el.classList.remove("on");
+          });
+          const mq = $("mQuiz");
+          if (mq) mq.classList.add("on");
+          filterKey = "retake";
+          ["fAll", "fUnseen", "fWrong", "fRight", "fBm", "fFailed"].forEach(
+            (id) => {
+              const el = $(id);
+              if (el) el.classList.remove("on", "on-s", "on-d", "on-w");
+            },
+          );
+          const fe = $("fFailed");
+          if (fe) fe.classList.add("on-w");
+          updateMetrics();
+          render();
+          toast(retakeList.length + " wrong questions reset — good luck!");
+        };
+
+        // ── History ──────────────────────────────────────────────────────────────────
+        window.showHistory = function () {
+          const panel = $("historyPanel");
+          const list = $("historyList");
+          panel.style.display = "block";
+          const offset = 20;
+          const top =
+            panel.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top, behavior: "smooth" });
+          if (!history.length) {
+            list.innerHTML =
+              '<div style="font-size:13px;color:var(--tx3);padding:8px 0">No exam attempts yet. Take an exam to see history.</div>';
+            $("clearHistBtn").style.display = "none";
+            return;
+          }
+          $("clearHistBtn").style.display = "";
+          list.innerHTML = history
+            .map(
+              (h, i) => `
+    <div class="hist-row">
+      <span class="hist-score ${h.pass ? "pass" : "fail"}">${h.pct}%</span>
+      <span class="hist-meta" style="display:flex;flex-direction:column;gap:1px">
+        <span style="color:var(--tx1);font-weight:500">${h.pdf || "Unknown PDF"}</span>
+        <span>${h.correct}/${h.total} correct · ${h.date} ${h.time}</span>
+      </span>
+      <span class="hist-badge" style="background:${h.pass ? "var(--bgs)" : "var(--bgd)"};color:${h.pass ? "var(--txs)" : "var(--txd)"}">${h.pass ? "Pass" : "Fail"}</span>
+    </div>`,
+            )
+            .join("");
+        };
+
+        window.hideHistory = function () {
+          $("historyPanel").style.display = "none";
+        };
+
+        window.clearHistory = async function () {
+          const ok = await showConfirm(
+            "Clear all exam history? This cannot be undone.",
+            "Clear",
+          );
+          if (!ok) return;
+          history = [];
+          localStorage.removeItem("sg_history");
+          showHistory();
+          toast("History cleared");
+        };
+
+        // ── Metrics & Progress ───────────────────────────────────────────────────────
+        function updateMetrics() {
+          const total = allQ.length;
+          const answered = Object.keys(state).filter(
+            (k) => !isNaN(k) && k !== "",
+          ).length;
+          const correct = Object.values(state).filter(
+            (v) => v === "right",
+          ).length;
+          const wrong = Object.values(state).filter(
+            (v) => v === "wrong",
+          ).length;
+          const unknown = Object.values(state).filter(
+            (v) => v === "unknown",
+          ).length;
+          const bms = Object.keys(state).filter((k) =>
+            k.startsWith("bm_"),
+          ).length;
+          const graded = correct + wrong;
+          const pct = graded ? Math.round((correct / graded) * 100) : 0;
+          const extraTile =
+            unknown > 0
+              ? `<div class="metric"><div class="mlabel">Ungraded</div><div class="mval w">${unknown}</div></div>`
+              : `<div class="metric"><div class="mlabel">Saved</div><div class="mval">${bms}</div></div>`;
+          $("metricsRow").innerHTML = `
+    <div class="metric"><div class="mlabel">Total</div><div class="mval b">${total}</div></div>
+    <div class="metric"><div class="mlabel">Answered</div><div class="mval">${answered}</div></div>
+    <div class="metric"><div class="mlabel">Correct</div><div class="mval g">${correct}</div></div>
+    <div class="metric"><div class="mlabel">Wrong</div><div class="mval r">${wrong}</div></div>
+    <div class="metric primary"><div class="mlabel">Score</div><div class="mval">${pct}%</div></div>
+    ${extraTile}`;
+        }
+
+        function updateProgress() {
+          const total = allQ.length;
+          if (!total) return;
+          const answered = Object.keys(state).filter(
+            (k) => !isNaN(k) && k !== "",
+          ).length;
+          const pct = Math.round((answered / total) * 100);
+          $("quizProg").style.width = pct + "%";
+          $("quizLbl").textContent =
+            answered + " of " + total + " answered (" + pct + "%)";
+        }
+
+        // ── Controls ─────────────────────────────────────────────────────────────────
+        window.toggleAns = function (btn, qi) {
+          const el = document.getElementById("ans-" + qi);
+          const show = el.classList.toggle("show");
+          btn.innerHTML = show
+            ? '<i class="ti ti-eye-off" style="font-size:13px"></i> Hide answer'
+            : '<i class="ti ti-eye" style="font-size:13px"></i> Show answer';
+        };
+
+        window.toggleBm = function (qi) {
+          const key = "bm_" + qi;
+          if (state[key]) delete state[key];
+          else state[key] = true;
+          updateMetrics();
+          rebuildCard(qi);
+          toast(
+            state["bm_" + qi] ? "Saved to bookmarks" : "Removed from bookmarks",
+          );
+        };
+
+        window.saveNote = function (qi, val) {
+          if (val) state["note_" + qi] = val;
+          else delete state["note_" + qi];
+          const ns = document.getElementById("ns-" + qi);
+          if (ns) ns.textContent = val ? "Saved" : "";
+        };
+
+        window.setMode = function (m) {
+          mode = m;
+          ["mBrowse", "mQuiz", "mRead", "mNotes"].forEach((id) => {
+            const el = $(id);
+            if (el) el.classList.remove("on");
+          });
+          const map = {
+            browse: "mBrowse",
+            quiz: "mQuiz",
+            read: "mRead",
+            notes: "mNotes",
+          };
+          if (map[m]) $(map[m]).classList.add("on");
+          render();
+        };
+
+        window.setFilter = function (f) {
+          filterKey = f;
+          ["fAll", "fUnseen", "fWrong", "fRight", "fBm", "fFailed"].forEach(
+            (id) => {
+              const el = $(id);
+              if (el) el.classList.remove("on", "on-s", "on-d", "on-w");
+            },
+          );
+          const map = {
+            all: "fAll",
+            unseen: "fUnseen",
+            wrong: "fWrong",
+            right: "fRight",
+            bookmarked: "fBm",
+            retake: "fFailed",
+          };
+          const el = $(map[f]);
+          if (el) {
+            if (f === "right") el.classList.add("on-s");
+            else if (f === "wrong") el.classList.add("on-d");
+            else if (f === "retake") el.classList.add("on-w");
+            else el.classList.add("on");
+          }
+          render();
+        };
+
+        window.shuffleQs = function () {
+          for (let i = order.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [order[i], order[j]] = [order[j], order[i]];
+          }
+          toast("Shuffled!");
+          render();
+        };
+
+        window.toggleShuffleAnswers = function () {
+          shuffleAnswers = !shuffleAnswers;
+          ansOrders = {}; // reset so new orders are generated on next render
+          const btn = $("btnShuffleAns");
+          if (btn) btn.classList.toggle("on", shuffleAnswers);
+          toast(
+            shuffleAnswers
+              ? "Answer options will be shuffled"
+              : "Answer order restored",
+          );
+          render();
+        };
+
+        window.resetAll = window.safeResetAll;
+      })();
+    </script>
+  </body>
+</html>
