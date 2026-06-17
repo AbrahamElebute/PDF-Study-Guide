@@ -514,6 +514,99 @@
         opacity: 0.88;
       }
 
+      /* Password modal (for encrypted PDFs) */
+      .pw-modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 450;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .pw-modal-bg.active {
+        display: flex;
+      }
+      .pw-modal {
+        background: var(--bg1);
+        border-radius: 14px;
+        padding: 24px 28px;
+        max-width: 360px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .pw-modal h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .pw-modal p {
+        font-size: 13px;
+        color: var(--tx2);
+        margin-bottom: 16px;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+      .pw-modal input {
+        width: 100%;
+        height: 38px;
+        padding: 0 12px;
+        border: 0.5px solid var(--bd2);
+        border-radius: var(--rmd);
+        background: var(--bg2);
+        color: var(--tx1);
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+        margin-bottom: 8px;
+        transition: border-color 0.15s;
+      }
+      .pw-modal input:focus {
+        border-color: var(--bd1);
+      }
+      .pw-modal input.err {
+        border-color: var(--bdd);
+      }
+      .pw-err {
+        font-size: 12px;
+        color: var(--txd);
+        margin-bottom: 12px;
+        min-height: 15px;
+      }
+      .pw-modal-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .pw-modal-btns button {
+        padding: 8px 18px;
+        border-radius: var(--rmd);
+        font-size: 13px;
+        font-family: var(--font);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .pw-modal-btns .pwbtn-cancel {
+        background: transparent;
+        border: 0.5px solid var(--bd2);
+        color: var(--tx2);
+      }
+      .pw-modal-btns .pwbtn-cancel:hover {
+        background: var(--bg2);
+      }
+      .pw-modal-btns .pwbtn-ok {
+        background: var(--txi);
+        color: #fff;
+        border: none;
+        font-weight: 500;
+      }
+      .pw-modal-btns .pwbtn-ok:hover {
+        opacity: 0.88;
+      }
+
       /* Quiz first-card hint banner */
       .quiz-hint {
         display: flex;
@@ -1449,6 +1542,33 @@
         </div>
       </div>
 
+      <!-- Password modal (for encrypted PDFs) -->
+      <div class="pw-modal-bg" id="pwModal">
+        <div class="pw-modal">
+          <h3>
+            <i class="ti ti-lock" style="font-size: 17px"></i> Password Required
+          </h3>
+          <p id="pwMsg">
+            This PDF is password-protected. Enter its password to open it.
+          </p>
+          <input
+            type="password"
+            id="pwInput"
+            placeholder="PDF password…"
+            autocomplete="off"
+          />
+          <div class="pw-err" id="pwErr"></div>
+          <div class="pw-modal-btns">
+            <button class="pwbtn-cancel" onclick="cancelPassword()">
+              Cancel
+            </button>
+            <button class="pwbtn-ok" id="pwOkBtn" onclick="submitPassword()">
+              <i class="ti ti-lock-open" style="font-size: 13px"></i> Unlock
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Exam overlay -->
       <div id="examOverlay">
         <div class="exam-header">
@@ -2110,6 +2230,60 @@
         // Init settings UI on load
         updateSettingsUI();
 
+        // ── Password prompt (for encrypted PDFs) ──────────────────────────────────
+        // pdf.js fires a callback / throws a PasswordException when a PDF is
+        // encrypted. We surface a modal, collect the password, and feed it back in.
+        let pwResolve = null;
+        function askPassword(reason) {
+          // reason: "need" (first prompt) or "incorrect" (retry after bad password)
+          return new Promise((resolve) => {
+            pwResolve = resolve;
+            const errEl = $("pwErr");
+            const inp = $("pwInput");
+            if (reason === "incorrect") {
+              errEl.textContent = "Incorrect password — please try again.";
+              inp.classList.add("err");
+            } else {
+              errEl.textContent = "";
+              inp.classList.remove("err");
+            }
+            inp.value = "";
+            $("pwModal").classList.add("active");
+            setTimeout(() => inp.focus(), 50);
+          });
+        }
+
+        window.submitPassword = function () {
+          const inp = $("pwInput");
+          const val = inp.value;
+          if (!val) {
+            $("pwErr").textContent = "Enter a password.";
+            inp.classList.add("err");
+            return;
+          }
+          $("pwModal").classList.remove("active");
+          if (pwResolve) {
+            const r = pwResolve;
+            pwResolve = null;
+            r({ password: val });
+          }
+        };
+
+        window.cancelPassword = function () {
+          $("pwModal").classList.remove("active");
+          if (pwResolve) {
+            const r = pwResolve;
+            pwResolve = null;
+            r({ cancelled: true });
+          }
+        };
+
+        // Submit password on Enter
+        $("pwInput").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") submitPassword();
+          if (e.key === "Escape") cancelPassword();
+        });
+
         // ── Upload & Parse ───────────────────────────────────────────────────────────
         $("dropZone").addEventListener("click", () => $("pdfInput").click());
         $("dropZone").addEventListener("dragover", (e) => {
@@ -2131,6 +2305,37 @@
         });
         $("searchIn").addEventListener("input", render);
 
+        // Opens a (possibly encrypted) PDF. Uses pdf.js's onPassword callback so the
+        // same loading task can be retried with a password without re-reading bytes.
+        function openPdfWithPassword(buf) {
+          return new Promise((resolve, reject) => {
+            const task = pdfjsLib.getDocument({ data: buf });
+            // Called by pdf.js when a password is needed or was wrong.
+            // exception.code: 1 = NEED_PASSWORD, 2 = INCORRECT_PASSWORD
+            task.onPassword = (updatePassword, code) => {
+              const reason = code === 2 ? "incorrect" : "need";
+              const st = $("uStatus");
+              if (st)
+                st.textContent = "🔒 PDF is locked — waiting for password…";
+              askPassword(reason).then((res) => {
+                if (res && res.cancelled) {
+                  // Abort the load; reject so loadFile can clean up.
+                  try {
+                    task.destroy();
+                  } catch (e) {}
+                  const err = new Error("PASSWORD_CANCELLED");
+                  err.cancelled = true;
+                  reject(err);
+                  return;
+                }
+                if (st) st.textContent = "Unlocking PDF…";
+                updatePassword(res.password);
+              });
+            };
+            task.promise.then(resolve, reject);
+          });
+        }
+
         async function loadFile(file) {
           const st = $("uStatus");
           st.textContent = "Reading PDF…";
@@ -2141,7 +2346,9 @@
           $("dbgBox").style.display = "none";
           try {
             const buf = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            // Open the document — this transparently prompts for a password if the
+            // PDF is encrypted, retrying until the right one is given or the user cancels.
+            const pdf = await openPdfWithPassword(buf);
             let rawLines = [];
             for (let i = 1; i <= pdf.numPages; i++) {
               const pg = await pdf.getPage(i);
@@ -2225,8 +2432,23 @@
             render();
             setTimeout(() => ($("pbarWrap").style.display = "none"), 600);
           } catch (e) {
-            st.textContent = "Error: " + e.message;
             $("pbarWrap").style.display = "none";
+            if (e && e.cancelled) {
+              st.textContent =
+                "🔒 Unlock cancelled — the PDF is password-protected.";
+              return;
+            }
+            // pdf.js throws PasswordException if the callback path isn't used.
+            if (
+              e &&
+              (e.name === "PasswordException" ||
+                /password/i.test(e.message || ""))
+            ) {
+              st.textContent =
+                "🔒 Couldn't unlock this PDF — wrong password or unsupported encryption.";
+              return;
+            }
+            st.textContent = "Error: " + e.message;
           }
         }
 
