@@ -1,41 +1,30 @@
 import express from "express";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
-import fs from "fs";
+import { dirname, join } from "path";
 
 dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// Serve static files
+// Serve static files (index.html, etc.)
 app.use(express.static(__dirname));
 
-// API endpoint to get the OPENROUTER_FREE_KEY
+// Expose the OpenRouter key from env to the front-end.
+// NOTE: this sends the key to every visitor's browser. Fine for a private /
+// trusted deployment; do not use a key you care about for a public site.
 app.get("/api/config", (req, res) => {
-  res.json({
-    openRouterKey: process.env.OPENROUTER_FREE_KEY || "",
-  });
+  res.json({ openRouterKey: process.env.OPENROUTER_FREE_KEY || "" });
 });
 
-// Serve the HTML file with injected env variables
+// Serve the app at root
 app.get("/", (req, res) => {
-  let html = fs.readFileSync(`${__dirname}/PDF Study Guide.html`, "utf8");
-
-  // Inject the environment variable into the HTML
-  html = html.replace(
-    'const OPENROUTER_FREE_KEY =\n          "sk-or-v1-',
-    `const OPENROUTER_FREE_KEY = "${process.env.OPENROUTER_FREE_KEY || "sk-or-v1-"}`,
-  );
-
-  res.send(html);
+  res.sendFile(join(__dirname, "index.html"));
 });
 
+// Railway provides PORT via env — must use it, not a hardcoded value
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(
-    `Using OPENROUTER_FREE_KEY: ${process.env.OPENROUTER_FREE_KEY?.slice(0, 20)}...`,
-  );
+  console.log(`Server running on port ${PORT}`);
 });
